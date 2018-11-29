@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <winsock2.h>
 
-#pragma comment(lib, "ws2_32.lib") // Link de la bibliothèque winsock2 pour compilation avec MINGW
+#pragma comment(lib, "ws2_32.lib") // Link the lib for MINGW
 
 #define PORT 1025
 #define HOST "127.0.0.1"
@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     int recv_size;
 
     //Initialisation of winsock2
-    printf("\nInitialisation de winsock2...");
+    printf("\nInitializing Winsock library...");
     if (WSAStartup(MAKEWORD(2, 2), &winsock) != 0)
     {
         printf("Erreur : %d", WSAGetLastError());
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     }
 
     //Generating a socket
-    printf("\nInitialisation de winsock2 ok.");
+    printf(" DONE");
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
     {
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     server.sin_port = htons(PORT);
 
     int conn = 1;
-    stream = "STREAM_SOCK";
+    stream = "S";
     message = "OK";
     while (conn == 1)
     {
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     }
 
     //Send data
-    message = "HELLO PETITE PUTE.";
+    message = "Bonjour ceci est mon message.";
     if (send(sock, message, strlen(message), 0) < 0)
     {
         puts("Erreur d'envoi.");
