@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+#include "tcp.h"
 
 static void
 start_server(GtkWidget *widget, gpointer data)
