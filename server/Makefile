@@ -5,7 +5,7 @@ LIBS_FLAGS = $$(pkg-config --cflags --libs gtk+-3.0)
  
 # File names
 EXEC = mickye
-SOURCES = $(wildcard */*.c)
+SOURCES = $(wildcard src/**/*.c src/*.c)
 OBJECTS = $(SOURCES:.c=.o)
  
 # Main target
