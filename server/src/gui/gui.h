@@ -2,4 +2,8 @@
 
 #define BUILDER_PATH "builder.ui"
 
-void add_handler(GtkBuilder *builder, char *id, char *on, void *callback);
+void
+add_handler(GtkBuilder *builder, char *id, char *on, void *callback);
+
+GtkBuilder*
+open_builder();
