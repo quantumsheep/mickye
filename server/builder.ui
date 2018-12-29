@@ -23,7 +23,7 @@
             <property name="label">Stop server</property>
           </object>
           <packing>
-            <property name="right-attach">0</property>
+            <property name="left-attach">1</property>
             <property name="top-attach">0</property>
           </packing>
         </child>
