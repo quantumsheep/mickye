@@ -1,11 +1,12 @@
 # Declaration of variables
 CC = gcc
-CC_FLAGS = -w
+CC_FLAGS = -Wall -Wextra
 LIBS_FLAGS = $$(pkg-config --cflags --libs gtk+-3.0)
  
 # File names
 EXEC = mickye
-SOURCES = $(wildcard src/**/*.c src/*.c)
+SOURCES =	$(wildcard src/*.c) \
+			$(wildcard src/*/*.c)
 OBJECTS = $(SOURCES:.c=.o)
  
 # Main target
@@ -17,5 +18,6 @@ $(EXEC): $(OBJECTS)
 	$(CC) -c $(CC_FLAGS) $(LIBS_FLAGS) $< -o $@
  
 # To remove generated files
+.PHONY: clean
 clean:
 	rm -f $(EXEC) $(OBJECTS)
