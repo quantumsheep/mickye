@@ -38,6 +38,17 @@
             <property name="width">2</property>
           </packing>
         </child>
+        <child>
+          <object id="terminal" class="GtkButton">
+            <property name="visible">True</property>
+            <property name="label">Terminal</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
       </object>
       <packing>
       </packing>
