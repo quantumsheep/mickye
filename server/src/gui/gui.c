@@ -1,8 +1,8 @@
 #include "gui.h"
 #include <stdlib.h>
 
-typedef struct _gui_callback_params_t GUICallbackParams;
-struct _gui_callback_params_t
+typedef struct gui_callback_params_t GUICallbackParams;
+struct gui_callback_params_t
 {
     void (*f)(GtkWidget*, GtkBuilder*);
     GtkBuilder* builder;
