@@ -24,15 +24,14 @@ gui_add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
 
     GObject *obj = gtk_builder_get_object(builder, id);
 
-    if (obj != NULL) {
+    if (obj != NULL) 
         g_signal_connect(obj, on, G_CALLBACK(_gui_caller), params);
-    }
 }
 
 void
-create_window(gchar* title, gint width, gint height){
-    GtkWidget
-    *terminal_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+create_window(char* title, int width, int height){
+    GtkWindow
+    *terminal_window = (GtkWindow*)gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
     gtk_window_set_title (terminal_window,
                           title);
@@ -45,15 +44,15 @@ create_window(gchar* title, gint width, gint height){
     // *image = gtk_image_new_from_file ("/home/mickdec/Bureau/mickey/server/src/gui/001.jpg");
     // gtk_container_add (GTK_CONTAINER (terminal_window), image);
 
-    gtk_widget_show (terminal_window);
+    gtk_widget_show ((GtkWidget*)terminal_window);
     // gtk_widget_show (image);
 }
 
 void
-error_modal(gchar *error_message)
+error_modal(char *error_message)
 {
-    GtkWidget
-    *modal_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    GtkWindow
+    *modal_window = (GtkWindow*)gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
     GtkWidget
     *dialog;

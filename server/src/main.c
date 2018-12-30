@@ -1,6 +1,12 @@
 #include "gui/gui.h"
 #include "handlers/tcp.h"
 
+void
+list_clients()
+{
+
+}
+
 int
 main (int argc, char **argv)
 {
@@ -25,6 +31,8 @@ main (int argc, char **argv)
     gui_add_handler(builder, "stop", "clicked", gtk_main_quit);
     gui_add_handler(builder, "terminal", "clicked", call_terminal);
     gui_add_handler(builder, "quit", "clicked", gtk_main_quit);
+
+    list_clients();
 
     gtk_main();
 
