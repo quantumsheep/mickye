@@ -14,17 +14,17 @@ main (int argc, char **argv)
      * The builder.ui file can be edited before launching the software
      * in order to customize the interface
      */
-    builder = open_builder();
+    builder = gui_open_builder();
     if(builder == NULL) return 1;
 
     /**
      * Link widgets to signal handlers
      */
-    add_handler(builder, "window", "destroy", gtk_main_quit);
-    add_handler(builder, "start", "clicked", start_server);
-    add_handler(builder, "stop", "clicked", gtk_main_quit);
-    add_handler(builder, "terminal", "clicked", gtk_main_quit);
-    add_handler(builder, "quit", "clicked", gtk_main_quit);
+    gui_add_handler(builder, "window", "destroy", gtk_main_quit);
+    gui_add_handler(builder, "start", "clicked", start_server);
+    gui_add_handler(builder, "stop", "clicked", gtk_main_quit);
+    gui_add_handler(builder, "terminal", "clicked", gtk_main_quit);
+    gui_add_handler(builder, "quit", "clicked", gtk_main_quit);
 
     gtk_main();
 

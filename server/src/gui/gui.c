@@ -1,7 +1,7 @@
 #include "gui.h"
 
 void
-add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
+gui_add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
 {
     GObject *obj = gtk_builder_get_object(builder, id);
 
@@ -11,7 +11,7 @@ add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
 }
 
 GtkBuilder*
-open_builder()
+gui_open_builder()
 {
     GtkBuilder* builder = gtk_builder_new();
     GError *error = NULL;
