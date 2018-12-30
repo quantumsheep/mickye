@@ -21,9 +21,10 @@ main (int argc, char **argv)
      * Link widgets to signal handlers
      */
     add_handler(builder, "window", "destroy", gtk_main_quit);
+    add_handler(builder, "terminal_window", "destroy", gtk_main_quit);
     add_handler(builder, "start", "clicked", start_server);
     add_handler(builder, "stop", "clicked", gtk_main_quit);
-    add_handler(builder, "terminal", "clicked", gtk_main_quit);
+    add_handler(builder, "terminal", "clicked", call_terminal);
     add_handler(builder, "quit", "clicked", gtk_main_quit);
 
     gtk_main();
