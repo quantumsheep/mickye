@@ -110,9 +110,14 @@ tcp_init()
 void
 start_server(GtkWidget *widget, GtkBuilder *builder)
 {
-    // GObject *stopButton = gtk_builder_get_object(builder, "stop");
+    GObject *stopButton = gtk_builder_get_object(builder, "stop");
     
     gtk_widget_set_sensitive(widget, 0);
-    // g_object_set_property(stopButton, "sensitive", "FALSE");
+
+    GValue value = G_VALUE_INIT;
+    g_value_init(&value, G_TYPE_INT);
+    g_value_set_int(&value, 1);
+
+    g_object_set_property(stopButton, "sensitive", &value);
     g_thread_new("TCP", tcp_init, NULL);
 }
