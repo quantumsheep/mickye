@@ -3,3 +3,6 @@
 
 # Compilation's output (Executable)
 /mickye
+
+# SQLite database file
+/reg.db
