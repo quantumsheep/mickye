@@ -22,18 +22,31 @@ create_window(gchar* title, gint width, gint height){
                              width,
                              height);
 
+    // GtkWidget
+    // *image = gtk_image_new_from_file ("/home/mickdec/Bureau/mickey/server/src/gui/001.jpg");
+    // gtk_container_add (GTK_CONTAINER (terminal_window), image);
+
     gtk_widget_show (terminal_window);
+    // gtk_widget_show (image);
 }
 
 void
-error_modal()
+error_modal(gchar *error_message)
 {
-    GtkWidget *
-    dialog = gtk_dialog_new ();
-    GtkWidget *
-    close_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
-                                   "Close",
-                                   GTK_RESPONSE_OK);
+    GtkWidget
+    *modal_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+    GtkWidget
+    *dialog;
+
+    GtkDialogFlags
+    flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+
+    dialog = gtk_message_dialog_new (modal_window,
+                                    flags,
+                                    GTK_MESSAGE_ERROR,
+                                    GTK_BUTTONS_CLOSE,
+                                    error_message);
 
     int result = gtk_dialog_run (GTK_DIALOG (dialog));
     switch (result)
@@ -52,6 +65,7 @@ void
 call_terminal()
 {
     create_window("Terminal", 800, 600);
+    error_modal("Ceci est un message d'erreur");
 }
 
 GtkBuilder*
