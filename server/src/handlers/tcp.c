@@ -41,7 +41,7 @@ socketThread(void *arg)
     pthread_exit(NULL);
 }
 
-void
+void*
 tcp_init()
 {
     int serverSocket, newSocket;
@@ -71,7 +71,7 @@ tcp_init()
     bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 
     // Listen on the socket, with 40 max connection requests queued
-    if (listen(serverSocket, 50) == 0)
+    if (listen(serverSocket, 50) == 0) 
         printf("Listening\n");
     else
         printf("Error\n");
@@ -105,12 +105,14 @@ tcp_init()
             i = 0;
         }
     }
-
-    return 0;
 }
 
 void
-start_server(GtkWidget *widget, gpointer data)
+start_server(GtkWidget *widget, GtkBuilder *builder)
 {
-    tcp_init();
+    // GObject *stopButton = gtk_builder_get_object(builder, "stop");
+    
+    gtk_widget_set_sensitive(widget, 0);
+    // g_object_set_property(stopButton, "sensitive", "FALSE");
+    g_thread_new("TCP", tcp_init, NULL);
 }
