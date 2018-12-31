@@ -1,0 +1,5 @@
+# Object files
+*.o
+
+# Compilation's output (Executable)
+/mickye_client
