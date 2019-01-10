@@ -1,16 +1,13 @@
 #include "gui/gui.h"
 #include "handlers/tcp.h"
 
-void
-list_clients()
+void list_clients()
 {
-
 }
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    GtkBuilder* builder;
+    GtkBuilder *builder;
 
     gtk_init(&argc, &argv);
 
@@ -21,7 +18,8 @@ main (int argc, char **argv)
      * in order to customize the interface
      */
     builder = gui_open_builder();
-    if(builder == NULL) return 1;
+    if (builder == NULL)
+        return 1;
 
     /**
      * Link widgets to signal handlers
