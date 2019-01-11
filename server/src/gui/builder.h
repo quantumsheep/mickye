@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <stdlib.h>
 
 #define BUILDER_PATH "builder.ui"
 

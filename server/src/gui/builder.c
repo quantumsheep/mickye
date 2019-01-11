@@ -1,5 +1,4 @@
 #include "builder.h"
-#include <stdlib.h>
 
 typedef struct gui_callback_params_t GUICallbackParams;
 struct gui_callback_params_t
