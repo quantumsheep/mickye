@@ -16,7 +16,7 @@ char buffer[1024];
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 void*
-socketThread(void *arg)
+socket_thread(void *arg)
 {
     int newSocket = *((int*)arg);
     recv(newSocket, client_message, 2000, 0);
@@ -88,7 +88,7 @@ tcp_init()
 
         // for each client request creates a thread and assign the client request to it to process
         // so the main thread can entertain next request
-        if (pthread_create(&tid[i], NULL, socketThread, &newSocket) != 0)
+        if (pthread_create(&tid[i], NULL, socket_thread, &newSocket) != 0)
         {
             printf("Failed to create thread\n");
         }
