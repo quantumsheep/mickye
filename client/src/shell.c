@@ -1,45 +1,75 @@
-#include <unistd.h>
 #include "shell.h"
 
-FILE*
-open_shell (const char *cmd)
+ssize_t
+shell_read(Shell shell, char *store)
 {
-    int fd[2];
-    int read_fd, write_fd;
-    int pid;               
+    return read(shell.stdout, store, 8192);
+}
+
+ssize_t
+shell_write(Shell shell, char *data)
+{
+    return write(shell.stdin, data, strlen(data));
+}
+
+Shell
+shell_open()
+{
+    Shell shell;
+
+    /**
+     * File descriptors works like:
+     *  - Index 0 : Reading
+     *  - Index 1 : Writing
+     */
+    int parent2child_fd[2];
+    int child2parent_fd[2];
+    int pid;
 
     /* First, create a pipe and a pair of file descriptors for its both ends */
-    pipe(fd);
-    read_fd = fd[0];
-    write_fd = fd[1];
+    pipe(parent2child_fd);
+    pipe(child2parent_fd);
 
     /* Now fork in order to create process from we'll read from */
     pid = fork();
-    if (pid == 0) {
+    if (pid == 0)
+    {
         /* Child process */
 
-        /* Close "read" endpoint - child will only use write end */
-        close(read_fd);
+        /**
+         * Close child's writing and parent's reading because we don't need them
+         * This apply only in this context (which is the child thread)
+         */
+        close(parent2child_fd[1]);
+        close(child2parent_fd[0]);
 
-        /* Now "bind" fd 1 (standard output) to our "write" end of pipe */
-        dup2(write_fd,1);
-
-        /* Close original descriptor we got from pipe() */
-        close(write_fd);
+        /**
+         * Bind process STDIN and STDOUt to useful file descriptors used by the parent's
+         */
+        dup2(parent2child_fd[0], STDIN_FILENO);
+        dup2(child2parent_fd[1], STDOUT_FILENO);
 
         /* Execute command via shell - this will replace current process */
-        execl("/bin/sh", "sh", "-c", cmd, NULL);
+        char *bash[] = {"/bin/bash", NULL};
+        execv(*bash, bash);
 
-        /* Don't let compiler be angry with us */
-        return NULL;
-    } else {
+        /* It's useless to return it but the compiler will like it */
+        return shell;
+    }
+    else
+    {
         /* Parent */
 
         /* Close "write" end, not needed in this process */
-        close(write_fd);
+        close(parent2child_fd[0]);
+        close(child2parent_fd[1]);
 
-        /* Parent process is simpler - just create FILE* from file descriptor,
-           for compatibility with popen() */
-        return fdopen(read_fd, "r");
+        shell.stdin = parent2child_fd[1];
+        shell.stdout = child2parent_fd[0];
+
+        shell.fstdin = fdopen(shell.stdin, "w");
+        shell.fstdout = fdopen(shell.stdout, "r");
+
+        return shell;
     }
 }

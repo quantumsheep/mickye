@@ -1,4 +1,5 @@
 #include "tcp.h"
+#include <limits.h>
 
 #define TCP_SERVER_PORT 3000
 
@@ -6,33 +7,35 @@ char client_message[2000];
 char buffer[1024];
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-void*
+void *
 socket_thread(void *arg)
 {
     int newSocket = *((int*)arg);
-    recv(newSocket, client_message, 2000, 0);
 
-    // Send message to the client socket
-    pthread_mutex_lock(&lock);
+    while(1)
+    {
+        recv(newSocket, client_message, 2000, 0);
 
-    char *message = malloc(sizeof(client_message) + 20);
+        // Send message to the client socket
+        pthread_mutex_lock(&lock);
 
-    strcpy(message, "Hello Client : ");
-    strcat(message, client_message);
-    strcat(message, "\n");
-    strcpy(buffer, message);
-    free(message);
+        char *message = (char *)malloc(sizeof(client_message) + 20);
 
-    pthread_mutex_unlock(&lock);
-    sleep(1);
-    send(newSocket, buffer, 13, 0);
-    printf("Exit socketThread \n");
-    close(newSocket);
+        strcpy(message, "Hello Client : ");
+        strcat(message, client_message);
+        strcat(message, "\n");
+        strcpy(buffer, message);
+        free(message);
+
+        pthread_mutex_unlock(&lock);
+        sleep(1);
+        send(newSocket, buffer, 13, 0);
+    }
 
     pthread_exit(NULL);
 }
 
-void*
+void *
 tcp_init()
 {
     int serverSocket, newSocket;
