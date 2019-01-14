@@ -5,3 +5,4 @@
 #include "window.h"
 #include "client.h"
 #include "log.h"
+#include "client.h"

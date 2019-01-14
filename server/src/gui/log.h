@@ -3,4 +3,4 @@
 #include <time.h>
 
 void
-log_create(GtkWidget *view, char *info_str, char *ip_str);
+log_add(GtkWidget *view, char *info_str, char *ip_str);

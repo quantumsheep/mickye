@@ -1,2 +1,4 @@
+#include <gtk/gtk.h>
+
 void
-call_clients_list();
+add_client(GtkListStore *store, char *ip_str, char *status);

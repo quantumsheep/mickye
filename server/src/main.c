@@ -2,27 +2,49 @@
 #include "handlers/tcp.h"
 #include <vte/vte.h>
 
-void
-load_clients(GObject *main_parent_object, gint left, gint top, gint width,
-             gint height)
+enum
 {
-    GtkWidget *client_scroll = gtk_scrolled_window_new(NULL, NULL);
+    COL_NAME = 0,
+    COL_STATUS,
+    NUM_COLS
+};
 
-    gtk_grid_attach(GTK_GRID(main_parent_object), client_scroll, left, top, width, height);
-    gtk_widget_show_all(client_scroll);
+void
+load_clients(GtkBuilder *builder, GtkListStore *store)
+{
+    GtkWidget *client_tree;
+    GObject *client_scroll;
+    GtkCellRenderer *renderer;
+
+    client_scroll = gtk_builder_get_object(builder, "clients");
+
+    client_tree = gtk_tree_view_new();
+
+    renderer = gtk_cell_renderer_text_new();
+    gtk_tree_view_insert_column_with_attributes(
+        GTK_TREE_VIEW(client_tree), -1, "IP", renderer, "text", COL_NAME, NULL);
+
+    renderer = gtk_cell_renderer_text_new();
+    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(client_tree), -1,
+                                                "STATUS", renderer, "text",
+                                                COL_STATUS, NULL);
+
+    gtk_tree_view_set_model(GTK_TREE_VIEW(client_tree), GTK_TREE_MODEL(store));
+
+    gtk_container_add(GTK_CONTAINER(client_scroll), client_tree);
 }
 
 void
-load_terminal(GObject *main_parent_object, gint left, gint top, gint width,
-              gint height)
+load_terminal(GtkBuilder *builder)
 {
-    gchar **envp = g_get_environ();
-    gchar **command =
-        (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
+    gchar **envp, **command;
+    GObject *terminal;
+
+    envp = g_get_environ();
+    command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
     g_strfreev(envp);
 
-    GtkWidget *terminal = vte_terminal_new();
-
+    terminal = gtk_builder_get_object(builder, "terminal");
     vte_terminal_spawn_sync(VTE_TERMINAL(terminal), VTE_PTY_DEFAULT,
                             NULL,       /* working directory  */
                             command,    /* command */
@@ -31,34 +53,26 @@ load_terminal(GObject *main_parent_object, gint left, gint top, gint width,
                             NULL, NULL, /* child setup */
                             NULL,       /* child pid */
                             NULL, NULL);
-
-    gtk_grid_attach(GTK_GRID(main_parent_object), terminal, left, top, width,
-                    height);
-    gtk_widget_show_all(terminal);
 }
 
 void
-load_logs(GObject *main_parent_object, GtkWidget *text_view, gint left,
-          gint top, gint width, gint height)
+load_logs(GtkBuilder *builder, GtkWidget *text_view)
 {
-    GtkWidget *text_view_scroll = gtk_scrolled_window_new(NULL, NULL);
+    GObject *text_view_scroll;
+
+    text_view_scroll = gtk_builder_get_object(builder, "logs");
 
     gtk_container_add(GTK_CONTAINER(text_view_scroll), text_view);
 
     gtk_text_view_set_editable(GTK_TEXT_VIEW(text_view), 0);
-    gtk_grid_attach(GTK_GRID(main_parent_object), text_view_scroll, left, top,
-                    width, height);
-    gtk_widget_show_all(text_view_scroll);
 }
 
 void
-load_interface(GObject *main_parent_object)
+load_interface(GtkBuilder *builder, GtkWidget *text_view, GtkListStore *store)
 {
-    load_clients(main_parent_object, 0, 4, 4, 1);
-    load_terminal(main_parent_object, 0, 5, 4, 3);
-
-    GtkWidget *text_view = gtk_text_view_new();
-    load_logs(main_parent_object, text_view, 0, 12, 4, 3);
+    load_clients(builder, store);
+    load_terminal(builder);
+    load_logs(builder, text_view);
 
     log_create(text_view, "Finished loading", "interface");
 }
@@ -67,6 +81,8 @@ int
 main(int argc, char **argv)
 {
     GtkBuilder *builder;
+    GtkWidget *text_view;
+    GtkListStore *store;
 
     gtk_init(&argc, &argv);
 
@@ -86,13 +102,19 @@ main(int argc, char **argv)
     gui_add_handler(builder, "window", "destroy", gtk_main_quit);
     gui_add_handler(builder, "start", "clicked", start_server);
     gui_add_handler(builder, "stop", "clicked", gtk_main_quit);
-    // gui_add_handler(builder, "terminal", "clicked", call_clients_list);
-    gui_add_handler(builder, "quit", "clicked", gtk_main_quit);
 
-    // Getting the main grid object from builder.ui
-    GObject *main_grid = gtk_builder_get_object(builder, "grid");
+    /*
+    * Store is for adding a client in client side.
+    * text_view is for adding a log.
+    */
+    store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
+    text_view = gtk_text_view_new();
 
-    load_interface(main_grid);
+    load_interface(builder, text_view, store);
+
+    GObject *window = gtk_builder_get_object(builder, "window");
+
+    gtk_widget_show_all(GTK_WIDGET(window));
     gtk_main();
 
     return 0;

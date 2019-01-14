@@ -4,7 +4,6 @@
   <requires lib="gtk+" version="3.20"/>
   <requires lib="vte-2.91" version="0.46"/>
   <object class="GtkWindow" id="window">
-    <property name="resizable">False</property>
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox">
@@ -17,7 +16,7 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkButton" id="start">
-                <property name="label" translatable="yes">Start server</property>
+                <property name="label" translatable="yes">button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -29,11 +28,10 @@
             </child>
             <child>
               <object class="GtkButton" id="stop">
-                <property name="label" translatable="yes">Stop server</property>
+                <property name="label" translatable="yes">button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="sensitive">False</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
