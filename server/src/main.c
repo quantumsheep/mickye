@@ -102,22 +102,24 @@ main(int argc, char **argv)
     gui_add_handler(builder, "window", "destroy", gtk_main_quit);
     gui_add_handler(builder, "start", "clicked", start_server);
     gui_add_handler(builder, "stop", "clicked", gtk_main_quit);
+    gui_add_handler(builder, "connect", "clicked", client_connect);
 
     /*
-    * Store is for adding a client in client side.
-    * text_view is for adding a log.
-    */
+     * Store is for adding a client in client side.
+     * text_view is for adding a log.
+     */
     store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
     text_view = gtk_text_view_new();
 
     load_interface(builder, text_view, store);
 
-
     GObject *window = gtk_builder_get_object(builder, "window");
 
+    client_add(store, "0.0.0.0", "Connected");
+
     /*
-    * All the interface changes have to be done before that function !
-    */
+     * All the interface changes have to be done before that function !
+     */
     gtk_widget_show_all(GTK_WIDGET(window));
     gtk_main();
 

@@ -4,34 +4,35 @@
 typedef struct gui_callback_params_t GUICallbackParams;
 struct gui_callback_params_t
 {
-    void (*f)(GtkWidget*, GtkBuilder*);
-    GtkBuilder* builder;
+    void (*f)(GtkWidget *, GtkBuilder *);
+    GtkBuilder *builder;
 };
 
 static void
-_gui_caller(GtkWidget* widget, gpointer data)
+_gui_caller(GtkWidget *widget, gpointer data)
 {
-    GUICallbackParams* params = data;
+    GUICallbackParams *params = data;
     params->f(widget, params->builder);
 }
 
 void
 gui_add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
 {
-    GUICallbackParams* params = (GUICallbackParams*)malloc(sizeof(GUICallbackParams));
+    GUICallbackParams *params =
+        (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
     params->builder = builder;
     params->f = callback;
 
     GObject *obj = gtk_builder_get_object(builder, id);
 
-    if (obj != NULL) 
+    if (obj != NULL)
         g_signal_connect(obj, on, G_CALLBACK(_gui_caller), params);
 }
 
-GtkBuilder*
+GtkBuilder *
 gui_open_builder()
 {
-    GtkBuilder* builder = gtk_builder_new();
+    GtkBuilder *builder = gtk_builder_new();
     GError *error = NULL;
 
     if (gtk_builder_add_from_file(builder, BUILDER_PATH, &error) == 0)

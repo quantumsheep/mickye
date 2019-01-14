@@ -10,9 +10,9 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 void *
 socket_thread(void *arg)
 {
-    int newSocket = *((int*)arg);
+    int newSocket = *((int *)arg);
 
-    while(1)
+    while (1)
     {
         recv(newSocket, client_message, 2000, 0);
 
@@ -49,7 +49,7 @@ tcp_init()
 
     /**
      * Configure server settings
-     * 
+     *
      * sin_family is Internet
      * sin_port use htons to use the proper byte order
      * sin_addr is the IP address (127.0.0.1 for localhost)
@@ -65,7 +65,7 @@ tcp_init()
     bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 
     // Listen on the socket, with 40 max connection requests queued
-    if (listen(serverSocket, 50) == 0) 
+    if (listen(serverSocket, 50) == 0)
         printf("Listening\n");
     else
         printf("Error\n");
@@ -78,10 +78,12 @@ tcp_init()
         // Accept call creates a new socket for the incoming connection
         addr_size = sizeof serverStorage;
 
-        newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
+        newSocket =
+            accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
 
-        // for each client request creates a thread and assign the client request to it to process
-        // so the main thread can entertain next request
+        // for each client request creates a thread and assign the client
+        // request to it to process so the main thread can entertain next
+        // request
         if (pthread_create(&tid[i], NULL, socket_thread, &newSocket) != 0)
         {
             printf("Failed to create thread\n");
@@ -105,13 +107,9 @@ void
 start_server(GtkWidget *widget, GtkBuilder *builder)
 {
     GObject *stopButton = gtk_builder_get_object(builder, "stop");
-    
+
     gtk_widget_set_sensitive(widget, 0);
+    gtk_widget_set_sensitive(GTK_WIDGET(stopButton), 1);
 
-    GValue value = G_VALUE_INIT;
-    g_value_init(&value, G_TYPE_INT);
-    g_value_set_int(&value, 1);
-
-    g_object_set_property(stopButton, "sensitive", &value);
     g_thread_new("TCP", tcp_init, NULL);
 }
