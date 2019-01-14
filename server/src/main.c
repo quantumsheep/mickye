@@ -74,7 +74,7 @@ load_interface(GtkBuilder *builder, GtkWidget *text_view, GtkListStore *store)
     load_terminal(builder);
     load_logs(builder, text_view);
 
-    log_create(text_view, "Finished loading", "interface");
+    log_add(text_view, "Finished loading", "interface");
 }
 
 int
@@ -112,8 +112,12 @@ main(int argc, char **argv)
 
     load_interface(builder, text_view, store);
 
+
     GObject *window = gtk_builder_get_object(builder, "window");
 
+    /*
+    * All the interface changes have to be done before that function !
+    */
     gtk_widget_show_all(GTK_WIDGET(window));
     gtk_main();
 
