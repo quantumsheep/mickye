@@ -1,9 +1,14 @@
-#include "gui/gui.h"
+#include <gtk/gtk.h>
 #include "handlers/tcp.h"
+#include "gui/builder.h"
+#include "gui/client.h"
+#include "gui/loader.h"
 
 int
 main(int argc, char **argv)
 {
+    GuiEnv gui_env;
+
     GtkBuilder *builder;
     GtkWidget *text_view;
     GtkListStore *store;
@@ -23,10 +28,10 @@ main(int argc, char **argv)
     /**
      * Link widgets to signal handlers
      */
-    gui_add_handler(builder, "window", "destroy", gtk_main_quit);
-    gui_add_handler(builder, "start", "clicked", start_server);
-    gui_add_handler(builder, "stop", "clicked", gtk_main_quit);
-    gui_add_handler(builder, "connect", "clicked", client_connect);
+    gui_add_handler(builder, "window", "destroy", gtk_main_quit, &gui_env);
+    gui_add_handler(builder, "start", "clicked", start_server, &gui_env);
+    gui_add_handler(builder, "stop", "clicked", gtk_main_quit, &gui_env);
+    gui_add_handler(builder, "connect", "clicked", client_connect, &gui_env);
 
     /*
      * Store is for adding a client in client side.

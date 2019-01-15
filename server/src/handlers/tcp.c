@@ -1,3 +1,4 @@
+#include "../gui/builder.h"
 #include "tcp.h"
 
 #define TCP_SERVER_PORT 3000
@@ -103,7 +104,7 @@ tcp_init()
 }
 
 void
-start_server(GtkWidget *widget, GtkBuilder *builder)
+start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
     GObject *stopButton = gtk_builder_get_object(builder, "stop");
 

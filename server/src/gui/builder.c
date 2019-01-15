@@ -3,23 +3,25 @@
 typedef struct gui_callback_params_t GUICallbackParams;
 struct gui_callback_params_t
 {
-    void (*f)(GtkWidget *, GtkBuilder *);
+    void (*f)(GtkWidget *, GtkBuilder *, GuiEnv *);
     GtkBuilder *builder;
+    void *data;
 };
 
 static void
 _gui_caller(GtkWidget *widget, gpointer data)
 {
     GUICallbackParams *params = data;
-    params->f(widget, params->builder);
+    params->f(widget, params->builder, params->data);
 }
 
 void
-gui_add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
+gui_add_handler(GtkBuilder *builder, char *id, char *on, void (*callback), GuiEnv *data)
 {
     GUICallbackParams *params = (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
     params->builder = builder;
     params->f = callback;
+    params->data = data;
 
     GObject *obj = gtk_builder_get_object(builder, id);
 
