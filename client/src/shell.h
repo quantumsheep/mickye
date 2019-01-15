@@ -1,3 +1,6 @@
+#ifndef _SHELL_H
+#define _SHELL_H
+
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -20,3 +23,5 @@ shell_write(Shell shell, char *data);
 
 Shell
 shell_open();
+
+#endif

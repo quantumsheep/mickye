@@ -1,3 +1,6 @@
+#ifndef _TCP_H
+#define _TCP_H
+
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
@@ -16,3 +19,5 @@ tcp_receive(socket_t fd, char store[TCP_MAX_RECV_LEN]);
 
 int
 tcp_open(char *ip, int port);
+
+#endif
