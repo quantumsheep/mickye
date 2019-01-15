@@ -1,5 +1,4 @@
 #include "client.h"
-#include "env.h"
 
 enum
 {

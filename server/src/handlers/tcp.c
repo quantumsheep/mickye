@@ -1,4 +1,3 @@
-#include "../gui/builder.h"
 #include "tcp.h"
 
 #define TCP_SERVER_PORT 3000

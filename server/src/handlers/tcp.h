@@ -13,6 +13,7 @@
 #include <gtk/gtk.h>
 
 #include "../gui/env.h"
+#include "../gui/builder.h"
 
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
