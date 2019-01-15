@@ -1,9 +1,9 @@
 #ifndef _GUI_LOADER_H
 #define _GUI_LOADER_H
 
+#include "log.h"
 #include <gtk/gtk.h>
 #include <vte/vte.h>
-#include "log.h"
 
 enum
 {

@@ -1,7 +1,8 @@
 #include "terminal.h"
 #include <vte/vte.h>
 
-void call_terminal()
+void
+call_terminal()
 {
     // create_window("Terminal", 800, 600);
     // error_modal("Ceci est un message d'erreur");
@@ -12,11 +13,11 @@ void call_terminal()
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 200);
 
     gchar **envp = g_get_environ();
-    gchar **command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
+    gchar **command =
+        (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
     g_strfreev(envp);
 
-    vte_terminal_spawn_sync(VTE_TERMINAL(terminal),
-                            VTE_PTY_DEFAULT,
+    vte_terminal_spawn_sync(VTE_TERMINAL(terminal), VTE_PTY_DEFAULT,
                             NULL,       /* working directory  */
                             command,    /* command */
                             NULL,       /* environment */

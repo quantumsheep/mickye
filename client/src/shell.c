@@ -44,7 +44,8 @@ shell_open()
         close(child2parent_fd[0]);
 
         /**
-         * Bind process STDIN and STDOUt to useful file descriptors used by the parent's
+         * Bind process STDIN and STDOUt to useful file descriptors used by the
+         * parent's
          */
         dup2(parent2child_fd[0], STDIN_FILENO);
         dup2(child2parent_fd[1], STDOUT_FILENO);

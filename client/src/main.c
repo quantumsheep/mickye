@@ -14,8 +14,8 @@ use_shell(socket_t socket)
 
     char *cmd = "ls\n";
     shell_write(shell, cmd);
-    
-    while(shell_read(shell, store)) 
+
+    while (shell_read(shell, store))
     {
         puts(store);
     }
