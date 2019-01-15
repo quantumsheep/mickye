@@ -18,15 +18,15 @@ _gui_caller(GtkWidget *widget, gpointer data)
 void
 gui_add_handler(GtkBuilder *builder, char *id, char *on, void (*callback), GuiEnv *data)
 {
-    GUICallbackParams *params = (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
-    params->builder = builder;
-    params->f = callback;
-    params->data = data;
+    GUICallbackParams params;
+    params.builder = builder;
+    params.f = callback;
+    params.data = data;
 
     GObject *obj = gtk_builder_get_object(builder, id);
 
     if (obj != NULL)
-        g_signal_connect(obj, on, G_CALLBACK(_gui_caller), params);
+        g_signal_connect(obj, on, G_CALLBACK(_gui_caller), &params);
 }
 
 GtkBuilder *
