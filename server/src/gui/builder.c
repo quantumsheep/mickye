@@ -16,14 +16,17 @@ _gui_caller(GtkWidget *widget, gpointer data)
 }
 
 void
-gui_add_handler(GtkBuilder *builder, char *id, char *on, void (*callback), GuiEnv *data)
+gui_add_handler(GtkBuilder *builder, char *id, char *on, void(*callback), GuiEnv *data)
 {
-    GUICallbackParams *params = (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
+    GUICallbackParams *params;
+    GObject *obj;
+
+    params = (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
     params->builder = builder;
     params->f = callback;
     params->data = data;
 
-    GObject *obj = gtk_builder_get_object(builder, id);
+    obj = gtk_builder_get_object(builder, id);
 
     if (obj != NULL)
         g_signal_connect(obj, on, G_CALLBACK(_gui_caller), params);
@@ -32,8 +35,10 @@ gui_add_handler(GtkBuilder *builder, char *id, char *on, void (*callback), GuiEn
 GtkBuilder *
 gui_open_builder()
 {
-    GtkBuilder *builder = gtk_builder_new();
+    GtkBuilder *builder;
     GError *error = NULL;
+
+    builder = gtk_builder_new();
 
     if (gtk_builder_add_from_file(builder, BUILDER_PATH, &error) == 0)
     {

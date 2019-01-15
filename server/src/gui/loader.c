@@ -49,8 +49,9 @@ load_terminal(GtkBuilder *builder)
 void
 load_logs(GtkBuilder *builder, GtkTextView *text_view)
 {
-    GObject *text_view_scroll = gtk_builder_get_object(builder, "logs");
+    GObject *text_view_scroll;
 
+    text_view_scroll = gtk_builder_get_object(builder, "logs");
     gtk_container_add(GTK_CONTAINER(text_view_scroll), GTK_WIDGET(text_view));
 
     gtk_text_view_set_editable(text_view, 0);

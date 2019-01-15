@@ -12,7 +12,10 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 void *
 socket_thread(void *arg)
 {
-    int newSocket = *((int *)arg);
+    int newSocket;
+    char *message;
+
+    newSocket = *((int *)arg);
 
     while (1)
     {
@@ -21,7 +24,7 @@ socket_thread(void *arg)
         // Send message to the client socket
         pthread_mutex_lock(&lock);
 
-        char *message = (char *)malloc(sizeof(client_message) + 20);
+        message = (char *)malloc(sizeof(client_message) + 20);
 
         strcpy(message, "Hello Client : ");
         strcat(message, client_message);
@@ -86,7 +89,7 @@ tcp_init()
             printf("Failed to create thread\n");
         }
 
-        if(++i >= 64)
+        if (++i >= 64)
         {
             pthread_join(tid[i], NULL);
         }

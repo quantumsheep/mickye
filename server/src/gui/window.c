@@ -3,8 +3,7 @@
 void
 create_window(char *title, int width, int height)
 {
-    GtkWindow *terminal_window =
-        (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    GtkWindow *terminal_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
     gtk_window_set_title(terminal_window, title);
 
@@ -22,12 +21,12 @@ create_window(char *title, int width, int height)
 void
 error_modal(char *error_message)
 {
-    GtkWindow *modal_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    GtkWindow *modal_window;
+    GtkWidget *dialog;
 
-    GtkWidget *dialog = gtk_message_dialog_new(
-        modal_window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
-        GTK_BUTTONS_CLOSE, error_message);
-
+    modal_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    dialog = gtk_message_dialog_new(modal_window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, error_message);
+    
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     switch (result)
     {

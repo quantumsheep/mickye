@@ -13,6 +13,8 @@ main(int argc, char **argv)
     GtkTextView *text_view;
     GtkListStore *store;
 
+    GObject *window;
+
     gtk_init(&argc, &argv);
 
     /**
@@ -50,7 +52,7 @@ main(int argc, char **argv)
     gui_add_handler(builder, "stop", "clicked", stop_server, &gui_env);
     gui_add_handler(builder, "connect", "clicked", client_connect, &gui_env);
 
-    GObject *window = gtk_builder_get_object(builder, "window");
+    window = gtk_builder_get_object(builder, "window");
 
     /*
      * All the interface changes have to be done before that function !

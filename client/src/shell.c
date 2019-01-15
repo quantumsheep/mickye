@@ -1,5 +1,8 @@
 #include "shell.h"
 
+#define SHELL_SHELL "/bin/bash"
+#define SHELL_CMD ((char *[]){SHELL_SHELL, NULL})
+
 ssize_t
 shell_read(Shell shell, char *store)
 {
@@ -51,8 +54,7 @@ shell_open()
         dup2(child2parent_fd[1], STDOUT_FILENO);
 
         /* Execute command via shell - this will replace current process */
-        char *bash[] = {"/bin/bash", NULL};
-        execv(*bash, bash);
+        execv(SHELL_SHELL, SHELL_CMD);
 
         /* It's useless to return it but the compiler will like it */
         return shell;

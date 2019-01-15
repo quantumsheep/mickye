@@ -4,19 +4,21 @@
 void
 call_terminal()
 {
-    // create_window("Terminal", 800, 600);
-    // error_modal("Ceci est un message d'erreur");
+    GtkWidget *terminal;
+    GtkWidget *window;
 
-    GtkWidget *terminal = vte_terminal_new();
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gchar **envp;
+    gchar **command;
+
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Terminal");
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 200);
 
-    gchar **envp = g_get_environ();
-    gchar **command =
-        (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
+    envp = g_get_environ();
+    command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
     g_strfreev(envp);
 
+    terminal = vte_terminal_new();
     vte_terminal_spawn_sync(VTE_TERMINAL(terminal), VTE_PTY_DEFAULT,
                             NULL,       /* working directory  */
                             command,    /* command */
