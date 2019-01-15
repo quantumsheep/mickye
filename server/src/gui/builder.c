@@ -17,8 +17,7 @@ _gui_caller(GtkWidget *widget, gpointer data)
 void
 gui_add_handler(GtkBuilder *builder, char *id, char *on, void *callback)
 {
-    GUICallbackParams *params =
-        (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
+    GUICallbackParams *params = (GUICallbackParams *)malloc(sizeof(GUICallbackParams));
     params->builder = builder;
     params->f = callback;
 
