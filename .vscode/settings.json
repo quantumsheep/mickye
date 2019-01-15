@@ -1,5 +1,5 @@
 {
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, IndentWidth: 4, AlwaysBreakAfterReturnType: All, PointerAlignment: Right, BreakBeforeBraces: Allman }",
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, IndentWidth: 4, AlwaysBreakAfterReturnType: All, PointerAlignment: Right, BreakBeforeBraces: Allman, ColumnLimit: 0 }",
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
 }
