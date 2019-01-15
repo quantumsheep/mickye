@@ -9,7 +9,7 @@ log_add(GtkTextView *text_view, char *info_str, char *ip_str)
     GtkTextMark *mark;
     GtkTextIter iter;
 
-    char *log_message = (char *)malloc(sizeof(char) * (strlen(info_str) + strlen(ip_str) + 15));
+    char *log_message = (char *)malloc(sizeof(char) * (strlen(info_str) + strlen(ip_str) + 16));
 
     time_t t;
     struct tm *now;
@@ -17,7 +17,7 @@ log_add(GtkTextView *text_view, char *info_str, char *ip_str)
     t = time(NULL);
     now = localtime(&t);
 
-    sprintf(log_message, "%s - %s - %d:%d:%d\n", info_str, ip_str, now->tm_hour, now->tm_min, now->tm_sec);
+    sprintf(log_message, "%s - %s - %02d:%02d:%02d\n", info_str, ip_str, now->tm_hour, now->tm_min, now->tm_sec);
 
     buffer = gtk_text_view_get_buffer(text_view);
     mark = gtk_text_buffer_get_mark(buffer, "end");
