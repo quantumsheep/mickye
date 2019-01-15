@@ -19,8 +19,8 @@ void
 load_terminal(GtkBuilder *builder);
 
 void
-load_logs(GtkBuilder *builder, GtkWidget *text_view);
+load_logs(GtkBuilder *builder, GtkTextView *text_view);
 
 void
-load_interface(GtkBuilder *builder, GtkWidget *text_view, GtkListStore *store);
+load_interface(GtkBuilder *builder, GtkTextView *text_view, GtkListStore *store);
 #endif

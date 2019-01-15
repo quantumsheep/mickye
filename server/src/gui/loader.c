@@ -47,19 +47,17 @@ load_terminal(GtkBuilder *builder)
 }
 
 void
-load_logs(GtkBuilder *builder, GtkWidget *text_view)
+load_logs(GtkBuilder *builder, GtkTextView *text_view)
 {
-    GObject *text_view_scroll;
+    GObject *text_view_scroll = gtk_builder_get_object(builder, "logs");
 
-    text_view_scroll = gtk_builder_get_object(builder, "logs");
+    gtk_container_add(GTK_CONTAINER(text_view_scroll), GTK_WIDGET(text_view));
 
-    gtk_container_add(GTK_CONTAINER(text_view_scroll), text_view);
-
-    gtk_text_view_set_editable(GTK_TEXT_VIEW(text_view), 0);
+    gtk_text_view_set_editable(text_view, 0);
 }
 
 void
-load_interface(GtkBuilder *builder, GtkWidget *text_view, GtkListStore *store)
+load_interface(GtkBuilder *builder, GtkTextView *text_view, GtkListStore *store)
 {
     load_clients(builder, store);
     load_terminal(builder);

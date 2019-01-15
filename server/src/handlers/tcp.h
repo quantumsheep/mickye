@@ -14,8 +14,12 @@
 
 #include "../gui/env.h"
 #include "../gui/builder.h"
+#include "../gui/log.h"
 
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
+
+void
+stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
 
 #endif

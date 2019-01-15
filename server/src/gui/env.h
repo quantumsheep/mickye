@@ -7,6 +7,7 @@ typedef struct gui_env_t GuiEnv;
 struct gui_env_t
 {
     GtkListStore *store;
+    GtkTextView *text_view;
     void *data;
 };
 

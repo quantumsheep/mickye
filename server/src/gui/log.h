@@ -3,9 +3,10 @@
 
 #include <gtk/gtk.h>
 #include <string.h>
+#include <stdlib.h>
 #include <time.h>
 
 void
-log_add(GtkWidget *view, char *info_str, char *ip_str);
+log_add(GtkTextView *view, char *info_str, char *ip_str);
 
 #endif

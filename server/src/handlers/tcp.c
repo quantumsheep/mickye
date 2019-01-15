@@ -4,6 +4,9 @@
 
 char client_message[2000];
 char buffer[1024];
+
+GThread *thread;
+
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 void *
@@ -63,13 +66,9 @@ tcp_init()
     // Bind the address struct to the socket
     bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 
-    // Listen on the socket, with 40 max connection requests queued
-    if (listen(serverSocket, 50) == 0)
-        printf("Listening\n");
-    else
-        printf("Error\n");
-
-    pthread_t tid[60];
+    // Listen on the socket, with 64 max connection requests queued
+    listen(serverSocket, 64);
+    pthread_t tid[64];
 
     int i = 0;
     while (1)
@@ -77,8 +76,7 @@ tcp_init()
         // Accept call creates a new socket for the incoming connection
         addr_size = sizeof serverStorage;
 
-        newSocket =
-            accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
+        newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
 
         // for each client request creates a thread and assign the client
         // request to it to process so the main thread can entertain next
@@ -88,16 +86,9 @@ tcp_init()
             printf("Failed to create thread\n");
         }
 
-        if (i >= 50)
+        if(++i >= 64)
         {
-            i = 0;
-
-            while (i < 50)
-            {
-                pthread_join(tid[i++], NULL);
-            }
-
-            i = 0;
+            pthread_join(tid[i], NULL);
         }
     }
 }
@@ -110,5 +101,20 @@ start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
     gtk_widget_set_sensitive(widget, 0);
     gtk_widget_set_sensitive(GTK_WIDGET(stopButton), 1);
 
-    g_thread_new("TCP", tcp_init, NULL);
+    thread = g_thread_new("TCP", tcp_init, NULL);
+
+    log_add(data->text_view, "Started", "Server");
+}
+
+void
+stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
+{
+    GObject *startButton = gtk_builder_get_object(builder, "start");
+
+    gtk_widget_set_sensitive(widget, 0);
+
+    g_thread_unref(thread);
+    gtk_widget_set_sensitive(GTK_WIDGET(startButton), 1);
+
+    log_add(data->text_view, "Stopped", "Server");
 }
