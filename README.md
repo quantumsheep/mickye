@@ -1,6 +1,7 @@
 ![Master Interface Control Key for Yogurt Exploitation](https://github.com/QuantumSheep/mickey/blob/master/logo.png)
 
-Remote Administration Tool called MICKYE which stand for Master Interface Control Key for Yogurt Exploitation. Don't question the name, it doesn't matter.
+Remote Administration Tool called MICKYE which stand for Master Interface Control Key for Yogurt Exploitation.  
+Don't question the name, it doesn't matter.
 
 ## Dependencies
 - GTK 3
