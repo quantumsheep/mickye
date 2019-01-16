@@ -2,7 +2,4 @@
 *.o
 
 # Compilation's output (Executable)
-/mickye
-
-# SQLite database file
-/reg.db
+/mickye_client

@@ -111,7 +111,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="margin_left">314</property>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
