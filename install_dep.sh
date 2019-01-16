@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script installs all the dependencies required for MICKYE
+# This script installs all the dependencies required for MICKEY
 # It has been tested with apt
 #
 # It installs the following packages:
