@@ -43,7 +43,8 @@ socket_thread(void *arg)
 void *
 tcp_init()
 {
-    int serverSocket, newSocket;
+    int serverSocket;
+    int newSocket;
     struct sockaddr_in serverAddr;
     struct sockaddr_storage serverStorage;
 
@@ -99,9 +100,11 @@ tcp_init()
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
-    GObject *stopButton = gtk_builder_get_object(builder, "stop");
-
+    GObject *stopButton;
+    
     gtk_widget_set_sensitive(widget, 0);
+
+    stopButton = gtk_builder_get_object(builder, "stop");
     gtk_widget_set_sensitive(GTK_WIDGET(stopButton), 1);
 
     thread = g_thread_new("TCP", tcp_init, NULL);
@@ -112,12 +115,14 @@ start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 void
 stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
-    GObject *startButton = gtk_builder_get_object(builder, "start");
-
+    GObject *startButton;
+    
     gtk_widget_set_sensitive(widget, 0);
 
-    g_thread_unref(thread);
+    startButton = gtk_builder_get_object(builder, "start");
     gtk_widget_set_sensitive(GTK_WIDGET(startButton), 1);
+
+    g_thread_unref(thread);
 
     log_add(data->text_view, "Stopped", "Server");
 }

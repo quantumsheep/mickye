@@ -18,9 +18,16 @@ client_add(GtkListStore *store, char *ip_str, char *status)
 void
 client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data)
 {
-    // GtkWidget *tree = (GtkWidget*)data;
+    // GtkWidget *tree;
+    // GtkTreeSelection *selected_client;
+    // gpointer *test;
 
-    // GtkTreeSelection *delected_client =
-    //     gtk_tree_view_get_selection(GTK_TREE_VIEW(tree_view));
+    // tree = (GtkWidget *)data;
+
+    // selected_client =gtk_tree_view_get_selection(GTK_TREE_VIEW(tree));
+
+    // test = gtk_tree_selection_get_user_data(selected_client);
+
     gtk_widget_set_sensitive(connect_button, 0);
+    // log_add(data->text_view, "Trying to connect", "Client");
 }

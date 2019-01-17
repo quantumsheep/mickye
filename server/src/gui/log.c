@@ -3,17 +3,16 @@
 void
 log_add(GtkTextView *text_view, char *info_str, char *ip_str)
 {
+    time_t t;
+    struct tm *now;
     GtkTextBuffer *buffer;
     GtkCssProvider *provider;
     GtkStyleContext *context;
     GtkTextMark *mark;
     GtkTextIter iter;
+    char *log_message;
 
-    char *log_message = (char *)malloc(sizeof(char) * (strlen(info_str) + strlen(ip_str) + 16));
-
-    time_t t;
-    struct tm *now;
-
+    log_message = (char *)malloc(sizeof(char) * (strlen(info_str) + strlen(ip_str) + 16));
     t = time(NULL);
     now = localtime(&t);
 

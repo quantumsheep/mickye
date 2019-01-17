@@ -6,7 +6,6 @@ call_terminal()
 {
     GtkWidget *terminal;
     GtkWidget *window;
-
     gchar **envp;
     gchar **command;
 
