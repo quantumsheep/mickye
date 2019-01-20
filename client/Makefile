@@ -1,5 +1,5 @@
 # Declaration of variables
-CC = gcc
+CC = gcc -pthread
 CC_FLAGS = -Wall -Wextra -Wno-unused-parameter
 LIBS_FLAGS = 
 
