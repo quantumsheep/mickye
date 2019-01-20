@@ -15,12 +15,6 @@ struct shell_t
     FILE *fstdout;
 };
 
-ssize_t
-shell_read(Shell shell, char *store);
-
-ssize_t
-shell_write(Shell shell, char *data);
-
 Shell
 shell_open();
 

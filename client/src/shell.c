@@ -3,18 +3,6 @@
 #define SHELL_SHELL "/bin/bash"
 #define SHELL_CMD ((char *[]){SHELL_SHELL, NULL})
 
-ssize_t
-shell_read(Shell shell, char *store)
-{
-    return read(shell.stdout, store, 8192);
-}
-
-ssize_t
-shell_write(Shell shell, char *data)
-{
-    return write(shell.stdin, data, strlen(data));
-}
-
 Shell
 shell_open()
 {

