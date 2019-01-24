@@ -1,5 +1,7 @@
 #include "log.h"
 
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
 void
 log_add(GtkTextView *text_view, char *info_str, char *ip_str)
 {
@@ -11,6 +13,7 @@ log_add(GtkTextView *text_view, char *info_str, char *ip_str)
     GtkTextMark *mark;
     GtkTextIter iter;
     char *log_message;
+    FILE *log_file;
 
     log_message = (char *)malloc(sizeof(char) * (strlen(info_str) + strlen(ip_str) + 16));
     t = time(NULL);
@@ -49,6 +52,18 @@ log_add(GtkTextView *text_view, char *info_str, char *ip_str)
 
     /* Change left margin throughout the widget */
     gtk_text_view_set_left_margin(text_view, 10);
+
+    pthread_mutex_lock(&lock);
+
+    log_file = fopen("log.txt", "a");
+
+    if(log_file != NULL)
+    {
+        fwrite(log_message, sizeof(char), strlen(log_message), log_file);
+        fclose(log_file);
+    }
+
+    pthread_mutex_unlock(&lock);
 
     free(log_message);
 }
