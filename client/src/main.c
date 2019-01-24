@@ -44,10 +44,18 @@ use_shell()
     puts("Done opening the shell");
 
     pthread_t thread_recv;
-    pthread_create(&thread_recv, NULL, shell_stdin_from_server, NULL);
+    if(pthread_create(&thread_recv, NULL, shell_stdin_from_server, NULL) != 0)
+    {
+        puts("Failed to create receiver thread.");
+        return;
+    }
 
     pthread_t thread_push;
-    pthread_create(&thread_push, NULL, shell_stdout_to_server, NULL);
+    if(pthread_create(&thread_push, NULL, shell_stdout_to_server, NULL) != 0)
+    {
+        puts("Failed to create pusher thread.");
+        return;
+    }
 
     pthread_join(thread_recv, NULL);
     pthread_join(thread_push, NULL);
