@@ -6,3 +6,6 @@
 
 # SQLite database file
 /reg.db
+
+# Log file
+/log.txt
