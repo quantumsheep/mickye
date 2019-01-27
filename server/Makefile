@@ -1,7 +1,7 @@
 # Declaration of variables
 CC = gcc
 CC_FLAGS = -Wall -Wextra -Wno-unused-parameter
-LIBS_FLAGS = $$(pkg-config --cflags --libs gtk+-3.0 vte-2.91)
+LIBS_FLAGS = $$(pkg-config --cflags --libs gtk+-3.0 sqlite3 vte-2.91)
 
 # File names
 EXEC = mickye

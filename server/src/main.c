@@ -1,3 +1,5 @@
+#include "database/db.h"
+#include "database/db_initializer.h"
 #include "gui/builder.h"
 #include "gui/client.h"
 #include "gui/loader.h"
@@ -7,6 +9,7 @@
 int
 main(int argc, char **argv)
 {
+    Database *db;
     GuiEnv gui_env;
 
     GtkBuilder *builder;
@@ -14,6 +17,9 @@ main(int argc, char **argv)
     GtkListStore *store;
 
     GObject *window;
+
+    db = db_open();
+    db_init(db);
 
     gtk_init(&argc, &argv);
 
