@@ -26,7 +26,7 @@ db_init(Database *db)
 
         statement = db_prepare(db, query);
         sqlite3_step(statement.stmt);
-    }
 
-    free(query);
+        free(query);
+    }
 }
