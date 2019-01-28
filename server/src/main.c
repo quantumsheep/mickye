@@ -61,6 +61,8 @@ main(int argc, char **argv)
 
     window = gtk_builder_get_object(builder, "window");
 
+    client_add(store, "0.0.0.0", 1);
+
     /*
      * All the interface changes have to be done before that function !
      */
