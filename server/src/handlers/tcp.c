@@ -9,6 +9,16 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 GuiEnv *env = NULL;
 
+int server_socket;
+
+void
+tcp_annihilate_socket(int socket)
+{
+    shutdown(server_socket, SHUT_RDWR);
+    close(server_socket);
+    setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
+}
+
 void *
 socket_thread(void *arg)
 {
@@ -71,9 +81,8 @@ void *
 tcp_init()
 {
     /**
-     * Sockets file descriptors
+     * Client socket file descriptors
      */
-    int server_socket;
     int client_socket;
 
     /**
@@ -126,7 +135,7 @@ tcp_init()
 
         client_socket = accept(server_socket, (struct sockaddr *)&storage, &storage_size);
 
-        if (!stop_signal)
+        if (client_socket > -1 && !stop_signal)
         {
             if (tcp_create_connection(&tid[connections], client_socket, storage) != 0)
             {
@@ -177,6 +186,7 @@ stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
     gtk_widget_set_sensitive(GTK_WIDGET(startButton), 1);
 
     stop_signal = 1;
+    tcp_annihilate_socket(server_socket);
 
     log_add(data->text_view, "Stopped", "Server");
 }
