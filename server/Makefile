@@ -6,7 +6,8 @@ LIBS_FLAGS = $$(pkg-config --cflags --libs gtk+-3.0 sqlite3 vte-2.91)
 # File names
 EXEC = mickye
 SOURCES =	$(wildcard src/*.c) \
-			$(wildcard src/*/*.c)
+			$(wildcard src/*/*.c) \
+			$(wildcard src/*/*/*.c)
 OBJECTS = $(SOURCES:.c=.o)
 
 # Main target

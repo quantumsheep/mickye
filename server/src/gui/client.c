@@ -8,11 +8,25 @@ enum
 };
 
 void
-client_add(GtkListStore *store, char *ip_str, char *status)
+client_add(GtkListStore *store, char *ip_str, int status)
 {
     GtkTreeIter iter;
+    char *status_str;
 
-    gtk_list_store_insert_with_values(store, &iter, -1, COL_NAME, ip_str, COL_STATUS, status, -1);
+    switch (status)
+    {
+    case CLIENT_CONNECTED:
+        status_str = "Connected";
+        break;
+    case CLIENT_DISCONNECTED:
+        status_str = "Disconnected";
+        break;
+    default:
+        status_str = "Unknown";
+        break;
+    }
+
+    gtk_list_store_insert_with_values(store, &iter, -1, COL_NAME, ip_str, COL_STATUS, status_str, -1);
 }
 
 void

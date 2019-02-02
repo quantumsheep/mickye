@@ -5,8 +5,13 @@
 
 #include "env.h"
 
+enum {
+    CLIENT_CONNECTED = 1,
+    CLIENT_DISCONNECTED
+};
+
 void
-client_add(GtkListStore *store, char *ip_str, char *status);
+client_add(GtkListStore *store, char *ip_str, int status);
 
 void
 client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data);

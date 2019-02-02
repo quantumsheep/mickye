@@ -9,49 +9,96 @@ GThread *thread;
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
+GuiEnv *env = NULL;
+
+typedef struct tcp_client_t TcpClient;
+struct tcp_client_t
+{
+    int socket;
+    char ipv4[INET_ADDRSTRLEN];
+    char ipv6[INET6_ADDRSTRLEN];
+};
+
 void *
 socket_thread(void *arg)
 {
-    int newSocket;
+    TcpClient client;
     char *message;
+    ssize_t received;
 
-    newSocket = *((int *)arg);
+    client = *((TcpClient *)arg);
+
+    client_add(env->store, client.ipv4, CLIENT_CONNECTED);
 
     while (1)
     {
-        recv(newSocket, client_message, 2000, 0);
+        received = recv(client.socket, client_message, 2000, 0);
 
-        // Send message to the client socket
-        pthread_mutex_lock(&lock);
+        if (received == -1)
+        {
+            break;
+        }
+        else if (received > 0)
+        {
+            // Send message to the client socket
+            pthread_mutex_lock(&lock);
 
-        message = (char *)malloc(sizeof(client_message) + 20);
+            message = (char *)malloc(sizeof(client_message) + 20);
 
-        strcpy(message, "Hello Client : ");
-        strcat(message, client_message);
-        strcat(message, "\n");
-        strcpy(buffer, message);
-        free(message);
+            strcpy(message, "Hello Client : ");
+            strcat(message, client_message);
+            strcat(message, "\n");
+            strcpy(buffer, message);
+            free(message);
 
-        pthread_mutex_unlock(&lock);
-        sleep(1);
-        send(newSocket, buffer, 13, 0);
+            pthread_mutex_unlock(&lock);
+            sleep(1);
+            send(client.socket, buffer, 13, 0);
+        }
     }
 
     pthread_exit(NULL);
 }
 
+int
+tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage storage)
+{
+    TcpClient client;
+    struct sockaddr_in *ipv4;
+    struct sockaddr_in6 *ipv6;
+
+    ipv4 = (struct sockaddr_in *)&storage;
+    ipv6 = (struct sockaddr_in6 *)&storage;
+
+    inet_ntop(AF_INET, &(ipv4->sin_addr), client.ipv4, INET_ADDRSTRLEN);
+    inet_ntop(AF_INET6, &(ipv6->sin6_addr), client.ipv6, INET_ADDRSTRLEN);
+
+    return pthread_create(thread, NULL, socket_thread, &client);
+}
+
 void *
 tcp_init()
 {
-    int serverSocket;
-    int newSocket;
-    struct sockaddr_in serverAddr;
-    struct sockaddr_storage serverStorage;
+    /**
+     * Sockets file descriptors
+     */
+    int server_socket;
+    int client_socket;
 
-    socklen_t addr_size;
+    /**
+     * Server informations
+     */
+    struct sockaddr_in addr;
+    struct sockaddr_storage storage;
+    socklen_t storage_size;
+
+    /**
+     * Number of connected clients
+     */
+    int connections = 0;
 
     // Create the socket.
-    serverSocket = socket(PF_INET, SOCK_STREAM, 0);
+    server_socket = socket(PF_INET, SOCK_STREAM, 0);
 
     /**
      * Configure server settings
@@ -60,39 +107,36 @@ tcp_init()
      * sin_port use htons to use the proper byte order
      * sin_addr is the IP address (127.0.0.1 for localhost)
      */
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(TCP_SERVER_PORT);
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(TCP_SERVER_PORT);
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     // Set all bits of the padding field to 0
-    memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
+    memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
 
     // Bind the address struct to the socket
-    bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
+    bind(server_socket, (struct sockaddr *)&addr, sizeof(addr));
 
     // Listen on the socket, with 64 max connection requests queued
-    listen(serverSocket, 64);
+    listen(server_socket, 64);
     pthread_t tid[64];
 
-    int i = 0;
+    /**
+     * Listening loop
+     */
     while (1)
     {
-        // Accept call creates a new socket for the incoming connection
-        addr_size = sizeof serverStorage;
+        storage_size = sizeof storage;
 
-        newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
+        client_socket = accept(server_socket, (struct sockaddr *)&storage, &storage_size);
 
-        // for each client request creates a thread and assign the client
-        // request to it to process so the main thread can entertain next
-        // request
-        if (pthread_create(&tid[i], NULL, socket_thread, &newSocket) != 0)
+        if (tcp_create_connection(&tid[connections], client_socket, storage) != 0)
         {
-            printf("Failed to create thread\n");
+            printf("Thread N°%d can't be created.", connections);
         }
-
-        if (++i >= 64)
+        else if (++connections >= 64)
         {
-            pthread_join(tid[i], NULL);
+            pthread_join(tid[connections - 1], NULL);
         }
     }
 }
@@ -101,11 +145,16 @@ void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
     GObject *stopButton;
-    
+
     gtk_widget_set_sensitive(widget, 0);
 
     stopButton = gtk_builder_get_object(builder, "stop");
     gtk_widget_set_sensitive(GTK_WIDGET(stopButton), 1);
+
+    if (env == NULL)
+    {
+        env = data;
+    }
 
     thread = g_thread_new("TCP", tcp_init, NULL);
 
@@ -116,7 +165,7 @@ void
 stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
     GObject *startButton;
-    
+
     gtk_widget_set_sensitive(widget, 0);
 
     startButton = gtk_builder_get_object(builder, "start");

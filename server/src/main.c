@@ -42,8 +42,6 @@ main(int argc, char **argv)
 
     load_interface(builder, text_view, store);
 
-    client_add(store, "0.0.0.0", "Connected");
-
     /**
      * Adding variables to GUI environnement variable
      */
