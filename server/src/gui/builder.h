@@ -6,7 +6,7 @@
 
 #include "env.h"
 
-#define BUILDER_PATH "builder.ui"
+#define BUILDER_PATH "static/builder.ui"
 
 void
 gui_add_handler(GtkBuilder *builder, char *id, char *on, void (*callback), GuiEnv *data);
