@@ -1,6 +1,6 @@
 #include "tcp.h"
 
-char buffer[1024];
+char buffer[TCP_CHUNK_SIZE];
 
 GThread *thread;
 
@@ -43,7 +43,7 @@ socket_thread(void *arg)
 
             pthread_mutex_unlock(&lock);
             sleep(1);
-            send(client.socket, buffer, 13, 0);
+            send(client.socket, buffer, strlen(buffer), 0);
         }
     }
 
