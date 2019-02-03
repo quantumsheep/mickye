@@ -1,8 +1,5 @@
 #include "tcp.h"
 
-#define TCP_SERVER_PORT 3000
-
-char client_message[2000];
 char buffer[1024];
 
 GThread *thread;
@@ -11,19 +8,12 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 GuiEnv *env = NULL;
 
-typedef struct tcp_client_t TcpClient;
-struct tcp_client_t
-{
-    int socket;
-    char ipv4[INET_ADDRSTRLEN];
-    char ipv6[INET6_ADDRSTRLEN];
-};
-
 void *
 socket_thread(void *arg)
 {
     TcpClient client;
     char *message;
+    char client_message[TCP_CHUNK_SIZE];
     ssize_t received;
 
     client = *((TcpClient *)arg);
@@ -32,7 +22,7 @@ socket_thread(void *arg)
 
     while (1)
     {
-        received = recv(client.socket, client_message, 2000, 0);
+        received = recv(client.socket, client_message, TCP_CHUNK_SIZE, 0);
 
         if (received == -1)
         {

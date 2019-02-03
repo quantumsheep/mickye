@@ -17,6 +17,17 @@
 #include "../gui/log.h"
 #include "../gui/client.h"
 
+#define TCP_SERVER_PORT 3000
+#define TCP_CHUNK_SIZE 8192
+
+typedef struct tcp_client_t TcpClient;
+struct tcp_client_t
+{
+    int socket;
+    char ipv4[INET_ADDRSTRLEN];
+    char ipv6[INET6_ADDRSTRLEN];
+};
+
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
 
