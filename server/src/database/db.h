@@ -19,6 +19,9 @@ struct database_statement_t
 Database *
 db_open();
 
+int
+db_exec(Database *db, const char *sql, char **err);
+
 DatabaseStatement
 db_prepare(Database *db, const char *sql);
 

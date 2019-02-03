@@ -34,12 +34,16 @@ char *
 file_read(const char *path)
 {
     FILE *f;
-    char *content;
+    char *content = NULL;
 
     f = fopen(path, "rt");
-    content = file_readall(f);
 
-    fclose(f);
+    if (f != NULL)
+    {
+        content = file_readall(f);
+
+        fclose(f);
+    }
 
     return content;
 }
