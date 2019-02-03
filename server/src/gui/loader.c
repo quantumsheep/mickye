@@ -1,15 +1,12 @@
 #include "loader.h"
 
 void
-load_clients(GtkBuilder *builder, GtkListStore *store)
+load_clients(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tree)
 {
-    GtkWidget *client_tree;
     GObject *client_scroll;
     GtkCellRenderer *renderer;
 
     client_scroll = gtk_builder_get_object(builder, "clients");
-
-    client_tree = gtk_tree_view_new();
 
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_insert_column_with_attributes(
@@ -58,9 +55,9 @@ load_logs(GtkBuilder *builder, GtkTextView *text_view)
 }
 
 void
-load_interface(GtkBuilder *builder, GtkTextView *text_view, GtkListStore *store)
+load_interface(GtkBuilder *builder, GtkTextView *text_view, GtkListStore *store, GtkWidget *client_tree)
 {
-    load_clients(builder, store);
+    load_clients(builder, store, client_tree);
     load_terminal(builder);
     load_logs(builder, text_view);
 

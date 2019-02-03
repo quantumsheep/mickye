@@ -15,6 +15,7 @@ main(int argc, char **argv)
     GtkBuilder *builder;
     GtkTextView *text_view;
     GtkListStore *store;
+    GtkWidget *client_tree;
 
     GObject *window;
 
@@ -37,14 +38,16 @@ main(int argc, char **argv)
      * Store is for adding a client in client side.
      * text_view is for adding a log.
      */
+    client_tree = gtk_tree_view_new();
     store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
     text_view = GTK_TEXT_VIEW(gtk_text_view_new());
 
-    load_interface(builder, text_view, store);
+    load_interface(builder, text_view, store, client_tree);
 
     /**
      * Adding variables to GUI environnement variable
      */
+    gui_env.client_tree = client_tree;
     gui_env.store = store;
     gui_env.text_view = text_view;
 

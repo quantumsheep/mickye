@@ -3,6 +3,7 @@
 
 #include <gtk/gtk.h>
 
+#include "log.h"
 #include "env.h"
 
 enum {
