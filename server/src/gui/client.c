@@ -33,23 +33,32 @@ void
 client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data)
 {
     GtkTreeSelection *selection;
-    GtkTreeIter *iter;
-    GValue *value;
+    GtkTreeIter iter;
+    GValue value;
     GtkTreeModel *model;
-    GtkTreePath *path;
     GtkListStore *store;
     GtkWidget *client_tree;
+    char selected_ip[200];
 
-    iter = NULL;
+    client_tree = data->client_tree;
+    model = data->store;
 
-    selection = gtk_tree_view_get_selection(data->client_tree);
-    gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
+    selection = gtk_tree_view_get_selection(client_tree);
+    gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
-//     gtk_tree_view_get_selection(data->client_tree);
-// tree_selection = treeview.get_selection()
-// tree_selection.set_mode(gtk.SELECTION_MULTIPLE)
-// tree_selection.connect("changed", onSelectionChanged)
+    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    {
+        gtk_tree_model_get_value(model, &iter, 0, &value);
 
-    // gtk_widget_set_sensitive(connect_button, 0);
-    log_add(data->text_view, "Trying to connect", "Client");
+        strcpy(selected_ip, g_value_dup_string(&value));
+        g_value_unset(&value);
+
+        log_add(data->text_view, "Trying to connect to", selected_ip);
+
+        call_terminal(selected_ip, 400, 200);
+    }
+    else
+    {
+        log_add(data->text_view, "Failed to connect", "Please select a connected client.");
+    }
 }

@@ -2,7 +2,7 @@
 #include <vte/vte.h>
 
 void
-call_terminal()
+call_terminal(char * title, int width, int height)
 {
     GtkWidget *terminal;
     GtkWidget *window;
@@ -10,8 +10,8 @@ call_terminal()
     gchar **command;
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Terminal");
-    gtk_window_set_default_size(GTK_WINDOW(window), 400, 200);
+    gtk_window_set_title(GTK_WINDOW(window), title);
+    gtk_window_set_default_size(GTK_WINDOW(window), width, height);
 
     envp = g_get_environ();
     command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL};
@@ -27,7 +27,6 @@ call_terminal()
                             NULL,       /* child pid */
                             NULL, NULL);
 
-    g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
 
     gtk_container_add(GTK_CONTAINER(window), terminal);
