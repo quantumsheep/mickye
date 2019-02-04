@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/socket.h>
 
 typedef struct shell_t Shell;
 struct shell_t
@@ -17,5 +18,8 @@ struct shell_t
 
 Shell
 shell_open();
+
+void
+shell_close(Shell shell);
 
 #endif

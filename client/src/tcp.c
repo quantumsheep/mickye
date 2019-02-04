@@ -32,10 +32,7 @@ tcp_open(char *ip, int port)
     server.sin_port = htons(port);
 
     // Connect to the server
-    if (connect(fd, (struct sockaddr *)&server, sizeof(server)) < 0)
-    {
-        return -1;
-    }
+    while (connect(fd, (struct sockaddr *)&server, sizeof(server)) < 0);
 
     return fd;
 }

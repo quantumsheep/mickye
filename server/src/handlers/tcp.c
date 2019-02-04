@@ -32,7 +32,6 @@ tcp_annihilate_socket(int socket)
 {
     shutdown(socket, SHUT_RDWR);
     close(socket);
-    setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
 }
 
 void *
@@ -116,6 +115,9 @@ tcp_init()
      */
     int connections = 0;
 
+    pthread_t tid[64];
+    int clients[64];
+
     // Create the socket.
     server_socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -140,7 +142,6 @@ tcp_init()
 
     // Listen on the socket, with 64 max connection requests queued
     listen(server_socket, 64);
-    pthread_t tid[64];
 
     /**
      * Listening loop
@@ -160,9 +161,14 @@ tcp_init()
         {
             printf("Thread N°%d can't be created.", connections);
         }
-        else if (++connections >= 64)
+        else
         {
-            pthread_join(tid[connections - 1], NULL);
+            clients[connections] = client_socket;
+
+            if (++connections >= 64)
+            {
+                pthread_join(tid[connections - 1], NULL);
+            }
         }
     }
 
@@ -171,7 +177,7 @@ tcp_init()
      */
     tcp_annihilate_socket(server_socket);
     while (--connections >= 0)
-        tcp_annihilate_socket(tid[connections]);
+        tcp_annihilate_socket(clients[connections]);
 
     puts("stoping server...");
     pthread_exit(NULL);
