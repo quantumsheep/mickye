@@ -121,8 +121,6 @@ tcp_init()
     // Create the socket.
     server_socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-    printf("%d\n", server_socket);
-
     /**
      * Configure server settings
      *
@@ -179,7 +177,6 @@ tcp_init()
     while (--connections >= 0)
         tcp_annihilate_socket(clients[connections]);
 
-    puts("stoping server...");
     pthread_exit(NULL);
 }
 
