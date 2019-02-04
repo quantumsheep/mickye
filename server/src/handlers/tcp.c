@@ -149,15 +149,12 @@ tcp_init()
     {
         storage_size = sizeof storage;
 
-        puts("Trying to accept...");
         client_socket = accept(server_socket, (struct sockaddr *)&storage, &storage_size);
 
         if (client_socket == -1)
         {
             break;
         }
-
-        puts("YUSSS, accepting one");
 
         if (tcp_create_connection(&tid[connections], client_socket, &storage) != 0)
         {
