@@ -54,7 +54,7 @@ client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data)
 
         log_add(data->text_view, "Trying to connect to", selected_ip);
 
-        call_terminal(selected_ip, 400, 200);
+        call_terminal(selected_ip, 600, 300);
     }
     else
     {
