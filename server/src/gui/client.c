@@ -36,12 +36,11 @@ client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data)
     GtkTreeIter iter;
     GValue value;
     GtkTreeModel *model;
-    GtkListStore *store;
-    GtkWidget *client_tree;
+    GtkTreeView *client_tree;
     char selected_ip[200];
 
-    client_tree = data->client_tree;
-    model = data->store;
+    client_tree = GTK_TREE_VIEW(data->client_tree);
+    model = GTK_TREE_MODEL(data->store);
 
     selection = gtk_tree_view_get_selection(client_tree);
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);

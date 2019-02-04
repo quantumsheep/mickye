@@ -5,6 +5,7 @@
 
 #include "log.h"
 #include "env.h"
+#include "terminal.h"
 
 enum {
     CLIENT_CONNECTED = 1,
