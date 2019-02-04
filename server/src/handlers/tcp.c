@@ -2,7 +2,8 @@
 
 char buffer[TCP_CHUNK_SIZE];
 
-GThread *thread;
+pthread_t server_thread;
+int stop_signal = 0;
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -116,25 +117,39 @@ tcp_init()
      */
     while (1)
     {
+        if (stop_signal)
+        {
+            break;
+        }
+
         storage_size = sizeof storage;
 
         client_socket = accept(server_socket, (struct sockaddr *)&storage, &storage_size);
 
-        if (tcp_create_connection(&tid[connections], client_socket, storage) != 0)
+        if (!stop_signal)
         {
-            printf("Thread N°%d can't be created.", connections);
-        }
-        else if (++connections >= 64)
-        {
-            pthread_join(tid[connections - 1], NULL);
+            if (tcp_create_connection(&tid[connections], client_socket, storage) != 0)
+            {
+                printf("Thread N°%d can't be created.", connections);
+            }
+            else if (++connections >= 64)
+            {
+                pthread_join(tid[connections - 1], NULL);
+            }
         }
     }
+
+    stop_signal = 0;
+    close(server_socket);
+    pthread_exit(NULL);
+    puts("stoping server...");
 }
 
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
     GObject *stopButton;
+    stop_signal = 0;
 
     gtk_widget_set_sensitive(widget, 0);
 
@@ -146,7 +161,7 @@ start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
         env = data;
     }
 
-    thread = g_thread_new("TCP", tcp_init, NULL);
+    pthread_create(&server_thread, NULL, tcp_init, NULL);
 
     log_add(data->text_view, "Started", "Server");
 }
@@ -161,7 +176,7 @@ stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
     startButton = gtk_builder_get_object(builder, "start");
     gtk_widget_set_sensitive(GTK_WIDGET(startButton), 1);
 
-    g_thread_unref(thread);
+    stop_signal = 1;
 
     log_add(data->text_view, "Stopped", "Server");
 }

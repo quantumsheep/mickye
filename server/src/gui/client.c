@@ -32,10 +32,24 @@ client_add(GtkListStore *store, char *ip_str, int status)
 void
 client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data)
 {
-    GtkTreeSelection *selected_client = gtk_tree_view_get_selection(GTK_TREE_VIEW(data->client_tree));
+    GtkTreeSelection *selection;
+    GtkTreeIter *iter;
+    GValue *value;
+    GtkTreeModel *model;
+    GtkTreePath *path;
+    GtkListStore *store;
+    GtkWidget *client_tree;
 
-    printf("%d", gtk_tree_selection_count_selected_rows(selected_client));
+    iter = NULL;
 
-    gtk_widget_set_sensitive(connect_button, 0);
+    selection = gtk_tree_view_get_selection(data->client_tree);
+    gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
+
+//     gtk_tree_view_get_selection(data->client_tree);
+// tree_selection = treeview.get_selection()
+// tree_selection.set_mode(gtk.SELECTION_MULTIPLE)
+// tree_selection.connect("changed", onSelectionChanged)
+
+    // gtk_widget_set_sensitive(connect_button, 0);
     log_add(data->text_view, "Trying to connect", "Client");
 }
