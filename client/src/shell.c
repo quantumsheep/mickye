@@ -64,3 +64,10 @@ shell_open()
         return shell;
     }
 }
+
+void
+shell_close(Shell shell)
+{
+    close(shell.stdin);
+    close(shell.stdout);
+}

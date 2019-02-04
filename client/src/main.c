@@ -18,10 +18,20 @@ shell_stdin_from_server(void *args)
     {
         memset(store, 0x00, FD_CHUNK_SIZE);
 
-        fd_read(sock, store);
+        if (!fd_read(sock, store))
+        {
+            puts("Server's stream ended...");
+            break;
+        }
 
         fd_write(shell.stdin, store);
     }
+
+    puts("Exiting reading...");
+
+    shell_close(shell);
+    pthread_exit(NULL);
+    return NULL;
 }
 
 void *
@@ -32,11 +42,19 @@ shell_stdout_to_server(void *args)
     while (1)
     {
         memset(store, 0x00, FD_CHUNK_SIZE);
-        
-        fd_read(shell.stdout, store);
+
+        if (!fd_read(shell.stdout, store))
+        {
+            break;
+        }
 
         fd_write(sock, store);
     }
+
+    puts("Exiting writing...");
+
+    pthread_exit(NULL);
+    return NULL;
 }
 
 void
@@ -66,22 +84,15 @@ use_shell()
 int
 main(int argc, char **argv)
 {
-    while (sock == -1)
+    while (1)
     {
-        puts("Opening socket");
+        puts("Try opening a socket connection...");
         sock = tcp_open("127.0.0.1", 3000);
 
-        if (sock == -1)
-        {
-            puts("Socket opening failed");
-        }
-        else
-        {
-            puts("Done opening socket!");
-            puts("Biding to shell...");
+        puts("Connection established!");
+        puts("Opening the shell...");
 
-            use_shell();
-        }
+        use_shell();
     }
 
     return 0;

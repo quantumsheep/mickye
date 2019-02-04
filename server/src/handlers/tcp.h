@@ -18,6 +18,8 @@
 #include "../gui/client.h"
 
 #define TCP_SERVER_PORT 3000
+#define TCP_SERVER_HOST "127.0.0.1"
+
 #define TCP_CHUNK_SIZE 8192
 
 typedef struct tcp_client_t TcpClient;
