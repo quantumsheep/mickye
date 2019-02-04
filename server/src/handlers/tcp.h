@@ -29,6 +29,9 @@ struct tcp_client_t
 };
 
 void
+tcp_annihilate_socket(int socket);
+
+void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
 
 void
