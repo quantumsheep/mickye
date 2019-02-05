@@ -4,6 +4,7 @@
 #include "gui/client.h"
 #include "gui/loader.h"
 #include "handlers/tcp.h"
+#include "handlers/clients_events.h"
 #include <gtk/gtk.h>
 
 int
@@ -17,6 +18,7 @@ main(int argc, char **argv)
     GtkListStore *store;
     GtkWidget *client_tree;
 
+    GObject *clients;
     GObject *window;
 
     db = db_open();
@@ -58,6 +60,9 @@ main(int argc, char **argv)
     gui_add_handler(builder, "start", "clicked", start_server, &gui_env);
     gui_add_handler(builder, "stop", "clicked", stop_server, &gui_env);
     gui_add_handler(builder, "connect", "clicked", client_connect, &gui_env);
+
+    clients = gtk_builder_get_object(builder, "clients");
+    g_signal_connect(clients, "button-press-event", (GCallback)clients_events_trigger, NULL);
 
     window = gtk_builder_get_object(builder, "window");
 
