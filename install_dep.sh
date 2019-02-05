@@ -12,7 +12,7 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-apt-get install \
+apt-get -y install \
     gcc \
     make \
     libgtk-3-dev \
