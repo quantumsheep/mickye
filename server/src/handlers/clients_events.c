@@ -18,7 +18,7 @@ view_popup_menu(GtkWidget *treeview, GdkEventButton *event, gpointer userdata)
 }
 
 gboolean
-clients_events_trigger(GtkWidget *treeview, gpointer userdata)
+clients_events_trigger(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data)
 {
     view_popup_menu(treeview, NULL, userdata);
 

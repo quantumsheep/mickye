@@ -8,6 +8,6 @@
 #include "../gui/client.h"
 
 gboolean
-clients_events_trigger(GtkWidget *treeview, gpointer userdata);
+clients_events_trigger(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data);
 
 #endif
