@@ -34,9 +34,9 @@ void
 tcp_annihilate_socket(int socket);
 
 void
-start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
+start_server(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data);
 
 void
-stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data);
+stop_server(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data);
 
 #endif

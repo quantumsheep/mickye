@@ -181,7 +181,7 @@ tcp_init()
 }
 
 void
-start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
+start_server(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data)
 {
     GObject *stopButton;
 
@@ -201,7 +201,7 @@ start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 }
 
 void
-stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
+stop_server(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data)
 {
     GObject *startButton;
 

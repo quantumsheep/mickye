@@ -60,9 +60,7 @@ main(int argc, char **argv)
     gui_add_handler(builder, "start", "clicked", start_server, &gui_env);
     gui_add_handler(builder, "stop", "clicked", stop_server, &gui_env);
     gui_add_handler(builder, "connect", "clicked", client_connect, &gui_env);
-
-    clients = gtk_builder_get_object(builder, "clients");
-    g_signal_connect(clients, "button-press-event", (GCallback)clients_events_trigger, NULL);
+    gui_add_handler(builder, "clients", "button-press-event", clients_events_trigger, &gui_env);
 
     window = gtk_builder_get_object(builder, "window");
 
