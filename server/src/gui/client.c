@@ -34,7 +34,7 @@ client_connect(GtkWidget *_, GtkBuilder *builder, GuiEnv *data)
 {
     GtkTreeSelection *selection;
     GtkTreeIter iter;
-    GValue value;
+    GValue value = {0,};
     GtkTreeModel *model;
     GtkTreeView *client_tree;
     char selected_ip[200];
