@@ -3,7 +3,7 @@
 typedef struct gui_callback_params_t GUICallbackParams;
 struct gui_callback_params_t
 {
-    void (*f)(GtkWidget *, GtkBuilder *, GdkEventButton *, GuiEnv *);
+    void (*f)(GtkWidget *, GtkBuilder *, GdkEvent *, GuiEnv *);
     GtkBuilder *builder;
     void *data;
 };
