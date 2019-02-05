@@ -6,8 +6,9 @@
 
 #include "../gui/env.h"
 #include "../gui/client.h"
+#include "../gui/builder.h"
 
-gboolean
+void
 clients_events_trigger(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data);
 
 #endif

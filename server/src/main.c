@@ -18,7 +18,6 @@ main(int argc, char **argv)
     GtkListStore *store;
     GtkWidget *client_tree;
 
-    GObject *clients;
     GObject *window;
 
     db = db_open();

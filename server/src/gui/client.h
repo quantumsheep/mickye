@@ -16,6 +16,6 @@ void
 client_add(GtkListStore *store, char *ip_str, int status);
 
 void
-client_connect(GtkWidget *connect_button, GtkBuilder *builder, GuiEnv *data);
+client_connect(GtkWidget *connect_button, GtkBuilder *builder, GdkEvent *ev, GuiEnv *data);
 
 #endif
