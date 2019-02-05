@@ -68,8 +68,7 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
 void
 call_terminal(char *title, int width, int height)
 {
-    if(text_view != NULL && entry != NULL && window != NULL){
-        gtk_widget_destroy(text_view);
+    if(entry != NULL && window != NULL){
         gtk_widget_destroy(entry);
         gtk_window_close(GTK_WINDOW(window));
     }

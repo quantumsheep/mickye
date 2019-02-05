@@ -40,7 +40,7 @@ client_connect(GtkWidget *_, GtkBuilder *builder, GuiEnv *data)
     char selected_ip[200];
 
     client_tree = GTK_TREE_VIEW(data->client_tree);
-    model = GTK_TREE_MODEL(data->store);
+    model = gtk_tree_view_get_model(client_tree);
 
     selection = gtk_tree_view_get_selection(client_tree);
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);

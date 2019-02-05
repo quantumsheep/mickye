@@ -9,9 +9,9 @@
 #include "../gui/env.h"
 
 gboolean
-trigger_clients_button_press(GtkWidget *widget, GdkEventButton *event, gpointer userdata);
+trigger_clients_button_press(GtkWidget *widget, GdkEventButton *event, GtkTextView *text_view);
 
 gboolean
-on_popup(GtkWidget *widget, gpointer userdata);
+on_popup(GtkWidget *widget, GtkTextView *text_view);
 
 #endif
