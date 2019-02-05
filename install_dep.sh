@@ -13,6 +13,8 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 apt-get install \
+    gcc \
+    make \
     libgtk-3-dev \
     libsqlite3-dev \
     libvte-2.91-dev
