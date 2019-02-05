@@ -24,17 +24,42 @@ return_entry()
     text = (char*)gtk_entry_buffer_get_text(Entrybuffer);
 
     insert_entry(text);
-    
+
     gtk_entry_buffer_delete_text(Entrybuffer, 0, strlen(text));
 }
 
-void set_terminal_colors(GtkWidget *widget){
-    GdkColor color;
+void
+set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
+{
+    GtkStyleContext *context;
+    GtkCssProvider *provider;
 
-    gdk_color_parse("lightgreen", &color);
-    gtk_widget_modify_fg(widget, GTK_STATE_NORMAL, &color);
-    gdk_color_parse("black", &color);
-    gtk_widget_modify_bg(widget, GTK_STATE_NORMAL, &color);
+    context = gtk_widget_get_style_context(entry);
+    provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(GTK_CSS_PROVIDER(provider),
+                                    "entry {\n"
+                                    "   color: lightgreen;\n"
+                                    "   background-color: black;\n"
+                                    "   border-color: green;\n"
+                                    "   border-radius: 0;\n"
+                                    "}\n"
+                                    -1, NULL);
+    gtk_style_context_add_provider(context,
+                                   GTK_STYLE_PROVIDER(provider),
+                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    context = gtk_widget_get_style_context(text_view);
+    provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(GTK_CSS_PROVIDER(provider),
+                                    "textview text{\n"
+                                    "   color: lightgreen;\n"
+                                    "   background-color: black;\n"
+                                    "}\n",
+                                    -1, NULL);
+    gtk_style_context_add_provider(context,
+                                   GTK_STYLE_PROVIDER(provider),
+                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref(provider);
 }
 
 void
@@ -64,8 +89,7 @@ call_terminal(char *title, int width, int height)
 
     gtk_box_pack_end(GTK_BOX(box), entry, FALSE, FALSE, 0);
 
-    set_terminal_colors(text_view);
-    set_terminal_colors(entry);
+    set_terminal_colors(entry, text_view);
 
     gtk_widget_show_all(window);
 }
