@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "../gui/env.h"
+#include "../gui/client.h"
 
 gboolean
 clients_events_trigger(GtkWidget *treeview, gpointer userdata);
