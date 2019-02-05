@@ -4,11 +4,14 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 
-#include "../gui/env.h"
-#include "../gui/client.h"
 #include "../gui/builder.h"
+#include "../gui/client.h"
+#include "../gui/env.h"
 
-void
-clients_events_trigger(GtkWidget *widget, GtkBuilder *builder, GdkEventButton *ev, GuiEnv *data);
+gboolean
+trigger_clients_button_press(GtkWidget *widget, GdkEventButton *event, gpointer userdata);
+
+gboolean
+on_popup(GtkWidget *widget, gpointer userdata);
 
 #endif

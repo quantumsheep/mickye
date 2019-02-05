@@ -59,7 +59,9 @@ main(int argc, char **argv)
     gui_add_handler(builder, "start", "clicked", start_server, &gui_env);
     gui_add_handler(builder, "stop", "clicked", stop_server, &gui_env);
     gui_add_handler(builder, "connect", "clicked", client_connect, &gui_env);
-    gui_add_handler(builder, "clients", "button-press-event", clients_events_trigger, &gui_env);
+
+    g_signal_connect(client_tree, "button-press-event", (GCallback)trigger_clients_button_press, NULL);
+    g_signal_connect(client_tree, "popup-menu", (GCallback)on_popup, NULL);
 
     window = gtk_builder_get_object(builder, "window");
 
