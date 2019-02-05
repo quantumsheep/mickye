@@ -2,6 +2,7 @@
 
 GtkWidget *entry;
 GtkWidget *text_view;
+GtkWidget *window;
 
 void
 insert_entry(char *text)
@@ -19,6 +20,8 @@ return_entry()
 {
     GtkEntryBuffer *Entrybuffer;
     char *text;
+
+    printf("\noui");
 
     Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
     text = (char*)gtk_entry_buffer_get_text(Entrybuffer);
@@ -65,7 +68,11 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
 void
 call_terminal(char *title, int width, int height)
 {
-    GtkWidget *window;
+    if(text_view != NULL && entry != NULL && window != NULL){
+        gtk_widget_destroy(text_view);
+        gtk_widget_destroy(entry);
+        gtk_window_close(GTK_WINDOW(window));
+    }
     GtkWidget *box;
     GtkWidget *scrollbar;
 
