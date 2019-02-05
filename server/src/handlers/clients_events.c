@@ -2,6 +2,7 @@
 #include "clients_events.h"
 
 GtkTextView *text_view;
+GtkWidget *entry;
 
 void
 popup_connect(GtkWidget *menuitem, gpointer userdata)
@@ -19,9 +20,34 @@ popup_connect(GtkWidget *menuitem, gpointer userdata)
 }
 
 void
-popup_rename(GtkWidget *menuitem)
+rename_client(GtkWidget *entry, GtkWidget *tree_view){
+    GtkEntryBuffer *Entrybuffer;
+    char *text;
+    GtkTreeSelection *selection;
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    GtkTreeView *client_tree;
+    char selected_ip[200];
+
+    Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
+    text = (char*)gtk_entry_buffer_get_text(Entrybuffer);
+
+    model = gtk_tree_view_get_model(tree_view);
+
+    selection = gtk_tree_view_get_selection(tree_view);
+    gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
+
+    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    {
+        puts("Renaming..");
+    }
+
+    gtk_entry_buffer_delete_text(Entrybuffer, 0, strlen(text));
+}
+
+void
+popup_rename(GtkWidget *menuitem, GtkWidget *tree_view)
 {
-    GtkWidget *entry;
     GtkWindow *rename_window;
 
     rename_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -29,7 +55,8 @@ popup_rename(GtkWidget *menuitem)
     gtk_window_set_default_size(rename_window, 200, 0);
 
     entry = gtk_entry_new();
-    // g_signal_connect(entry, "activate", printf("\noui"), NULL);
+    g_signal_connect(entry, "activate", rename_client, tree_view);
+
     gtk_container_add(rename_window, entry);
 
     gtk_widget_show_all(GTK_WIDGET(rename_window));
@@ -47,7 +74,7 @@ show_popmenu(GtkWidget *tree_view, GdkEventButton *event)
     menu_rename_item = gtk_menu_item_new_with_label("Rename the client.");
 
     g_signal_connect(menu_connect_item, "activate", (GCallback)popup_connect, tree_view);
-    g_signal_connect(menu_rename_item, "activate", (GCallback)popup_rename, NULL);
+    g_signal_connect(menu_rename_item, "activate", (GCallback)popup_rename, tree_view);
 
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menu_connect_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menu_rename_item);

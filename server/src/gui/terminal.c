@@ -21,8 +21,6 @@ return_entry()
     GtkEntryBuffer *Entrybuffer;
     char *text;
 
-    printf("\noui");
-
     Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
     text = (char*)gtk_entry_buffer_get_text(Entrybuffer);
 
