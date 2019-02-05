@@ -42,7 +42,7 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
                                     "   background-color: black;\n"
                                     "   border-color: green;\n"
                                     "   border-radius: 0;\n"
-                                    "}\n"
+                                    "}\n",
                                     -1, NULL);
     gtk_style_context_add_provider(context,
                                    GTK_STYLE_PROVIDER(provider),
