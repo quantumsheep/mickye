@@ -3,7 +3,7 @@
 
 #include <gtk/gtk.h>
 
-void
+GtkWindow *
 create_window(char *title, int width, int height);
 
 void

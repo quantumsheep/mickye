@@ -19,16 +19,39 @@ popup_connect(GtkWidget *menuitem, gpointer userdata)
 }
 
 void
+popup_rename(GtkWidget *menuitem)
+{
+    GtkWidget *entry;
+    GtkWindow *rename_window;
+
+    rename_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(rename_window, "Rename");
+    gtk_window_set_default_size(rename_window, 200, 0);
+
+    entry = gtk_entry_new();
+    // g_signal_connect(entry, "activate", printf("\noui"), NULL);
+    gtk_container_add(rename_window, entry);
+
+    gtk_widget_show_all(GTK_WIDGET(rename_window));
+}
+
+void
 show_popmenu(GtkWidget *tree_view, GdkEventButton *event)
 {
     GtkWidget *menu;
-    GtkWidget *menuitem;
+    GtkWidget *menu_connect_item;
+    GtkWidget *menu_rename_item;
 
     menu = gtk_menu_new();
-    menuitem = gtk_menu_item_new_with_label("Connect to the selected client.");
+    menu_connect_item = gtk_menu_item_new_with_label("Connect to the selected client.");
+    menu_rename_item = gtk_menu_item_new_with_label("Rename the client.");
 
-    g_signal_connect(menuitem, "activate", (GCallback)popup_connect, tree_view);
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+    g_signal_connect(menu_connect_item, "activate", (GCallback)popup_connect, tree_view);
+    g_signal_connect(menu_rename_item, "activate", (GCallback)popup_rename, NULL);
+
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menu_connect_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menu_rename_item);
+
     gtk_widget_show_all(menu);
     gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL, (event != NULL) ? event->button : 0, gdk_event_get_time((GdkEvent *)event));
 }
