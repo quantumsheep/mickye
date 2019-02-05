@@ -14,19 +14,15 @@
 #include "../gui/client.h"
 #include "../gui/env.h"
 #include "../gui/log.h"
+#include "tcp_client.h"
 
 #define TCP_SERVER_PORT 3000
 #define TCP_SERVER_HOST "127.0.0.1"
 
 #define TCP_CHUNK_SIZE 8192
 
-typedef struct tcp_client_t TcpClient;
-struct tcp_client_t
-{
-    int socket;
-    char ipv4[INET_ADDRSTRLEN];
-    char ipv6[INET6_ADDRSTRLEN];
-};
+TcpClient *
+tcp_get_client(int id);
 
 void
 tcp_annihilate_socket(int socket);

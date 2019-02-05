@@ -1,21 +1,23 @@
 #include "loader.h"
 
 void
+add_column(GtkWidget *client_tree, char *name, int position)
+{
+    GtkCellRenderer *renderer;
+    renderer = gtk_cell_renderer_text_new();
+    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(client_tree), -1, name, renderer, "text", position, NULL);
+}
+
+void
 load_clients(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tree)
 {
     GObject *client_scroll;
-    GtkCellRenderer *renderer;
 
     client_scroll = gtk_builder_get_object(builder, "clients");
 
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_insert_column_with_attributes(
-        GTK_TREE_VIEW(client_tree), -1, "IP", renderer, "text", COL_NAME, NULL);
-
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(client_tree), -1,
-                                                "STATUS", renderer, "text",
-                                                COL_STATUS, NULL);
+    add_column(client_tree, "ID", COL_SOCKET);
+    add_column(client_tree, "IP", COL_IPV4);
+    add_column(client_tree, "STATUS", COL_STATUS);
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(client_tree), GTK_TREE_MODEL(store));
 

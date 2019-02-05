@@ -40,7 +40,7 @@ main(int argc, char **argv)
      * text_view is for adding a log.
      */
     client_tree = gtk_tree_view_new();
-    store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
+    store = gtk_list_store_new(NUM_COLS, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);
     text_view = GTK_TEXT_VIEW(gtk_text_view_new());
 
     load_interface(builder, text_view, store, client_tree);
@@ -65,7 +65,7 @@ main(int argc, char **argv)
 
     window = gtk_builder_get_object(builder, "window");
 
-    client_add(store, "0.0.0.0", 1);
+    // client_add(store, "0.0.0.0", 1);
 
     /*
      * All the interface changes have to be done before that function !
