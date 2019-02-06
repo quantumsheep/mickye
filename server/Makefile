@@ -4,10 +4,9 @@ CC_FLAGS = -Wall -Wextra -Wno-unused-parameter
 LIBS_FLAGS = $$(pkg-config --cflags --libs gtk+-3.0 sqlite3 vte-2.91)
 
 # File names
-EXEC = mickye
+EXEC = mickye_server
 SOURCES =	$(wildcard src/*.c) \
-			$(wildcard src/*/*.c) \
-			$(wildcard src/*/*/*.c)
+			$(wildcard src/*/*.c)
 OBJECTS = $(SOURCES:.c=.o)
 
 # Main target
