@@ -5,25 +5,41 @@
 
 Config *_conf = NULL;
 
-char *
-config_get(char *key, char *dflt, int ensure)
+Config *
+config_select(char *key)
 {
-    Config *config;
-
-    puts(key);
-
-    config = _conf;
-
+    Config *config = _conf;
+    /**
+     * Find the configuration value matching key
+     */
     while (config != NULL)
     {
         if (strcmp(config->key, key) == 0)
         {
-            return config->value;
+            return config;
         }
 
         config = config->next;
     }
 
+    return config;
+}
+
+char *
+config_get(char *key, char *dflt, int ensure)
+{
+    Config *config;
+
+    config = config_select(key);
+
+    if (config != NULL)
+    {
+        return config->value;
+    }
+
+    /**
+     * Crash the app if in ensure mode
+     */
     if (ensure)
     {
         console_err("Can't get configuration parameter \"");
@@ -38,11 +54,22 @@ config_get(char *key, char *dflt, int ensure)
 void
 config_set(char *key, char *value)
 {
-    Config *new = (Config *)malloc(sizeof(Config));
-    new->key = key;
-    new->value = value;
-    new->next = _conf;
-    _conf = new;
+    Config *config;
+
+    config = config_select(key);
+
+    if (config != NULL)
+    {
+        config->value = value;
+    }
+    else
+    {
+        config = (Config *)malloc(sizeof(Config));
+        config->key = key;
+        config->value = value;
+        config->next = _conf;
+        _conf = config;
+    }
 }
 
 void
@@ -67,6 +94,7 @@ config_update()
 
         if (strlen(value) > 0)
         {
+            // puts(line);
             config_set(key, value);
         }
 
