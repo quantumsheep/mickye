@@ -77,7 +77,7 @@ client_connect(GtkWidget *_, GtkBuilder *__, GuiEnv *data)
         client_id = g_value_get_int(&value);
         g_value_unset(&value);
 
-        // If client_id exist, create the client, if client != NULL try to connect, else for the two if, send a error log.
+        // If client_id exist, create the client, if client != NULL try to connect, else for the both if, send a error log.
         if (client_id)
         {
             client = tcp_get_client(client_id);
