@@ -40,7 +40,7 @@ gui_open_builder()
 
     builder = gtk_builder_new();
 
-    if (gtk_builder_add_from_file(builder, BUILDER_PATH, &error) == 0)
+    if (gtk_builder_add_from_file(builder, CONFIG(CONFIG_BUILDER_PATH, CONFIG_BUILDER_PATH_DEFAULT), &error) == 0)
     {
         g_printerr("Error loading file: %s\n", error->message);
         g_clear_error(&error);

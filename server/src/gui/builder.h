@@ -5,8 +5,10 @@
 #include <stdlib.h>
 
 #include "env.h"
+#include "../config.h"
 
-#define BUILDER_PATH "static/builder.ui"
+#define CONFIG_BUILDER_PATH "gui_builder_path"
+#define CONFIG_BUILDER_PATH_DEFAULT "static/builder.ui"
 
 void
 gui_add_handler(GtkBuilder *builder, char *id, char *on, void (*callback), GuiEnv *data);

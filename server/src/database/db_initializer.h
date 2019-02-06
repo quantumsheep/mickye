@@ -7,7 +7,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define DB_SCRIPT_INIT_PATH "static/init.sql"
+#include "../config.h"
+
+#define CONFIG_DB_SCRIPT_PATH "db_script_path"
+#define CONFIG_DB_SCRIPT_PATH_DEFAULT "static/init.sql"
 
 int
 db_installed(Database *db);

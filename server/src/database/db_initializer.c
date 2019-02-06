@@ -40,7 +40,7 @@ db_init(Database *db)
 
     if (!db_installed(db))
     {
-        query = file_read(DB_SCRIPT_INIT_PATH);
+        query = file_read(CONFIG(CONFIG_DB_SCRIPT_PATH, CONFIG_DB_SCRIPT_PATH_DEFAULT));
 
         if (query == NULL)
         {

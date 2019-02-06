@@ -4,9 +4,10 @@
 #include <sqlite3.h>
 #include <stdlib.h>
 
-#define DB_FILEPATH "reg.db"
+#include "../config.h"
 
-#define DB_ERR
+#define CONFIG_DB_PATH "db_path"
+#define CONFIG_DB_PATH_DEFAULT "reg.db"
 
 typedef sqlite3 Database;
 typedef struct database_statement_t DatabaseStatement;

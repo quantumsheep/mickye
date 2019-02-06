@@ -6,7 +6,9 @@ db_open()
     sqlite3 *db;
     int rc;
 
-    rc = sqlite3_open(DB_FILEPATH, &db);
+    puts(CONFIG(CONFIG_DB_PATH, CONFIG_DB_PATH_DEFAULT));
+
+    rc = sqlite3_open(CONFIG(CONFIG_DB_PATH, CONFIG_DB_PATH_DEFAULT), &db);
     if (rc)
     {
         return NULL;

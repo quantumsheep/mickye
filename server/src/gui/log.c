@@ -71,7 +71,7 @@ log_add(GtkTextView *text_view, char *info_str, char *subject_str)
     pthread_mutex_lock(&lock);
 
     //Create a log file and insert the log at the end
-    log_file = fopen("log.txt", "a");
+    log_file = fopen(CONFIG(CONFIG_LOG_PATH, CONFIG_LOG_PATH_DEFAULT), "a");
     if (log_file != NULL)
     {
         fwrite(log_message, sizeof(char), strlen(log_message), log_file);

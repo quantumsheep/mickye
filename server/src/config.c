@@ -6,9 +6,13 @@
 Config *_conf = NULL;
 
 char *
-config_get(char *key)
+config_get(char *key, char *dflt, int ensure)
 {
-    Config *config = _conf;
+    Config *config;
+
+    puts(key);
+
+    config = _conf;
 
     while (config != NULL)
     {
@@ -20,7 +24,15 @@ config_get(char *key)
         config = config->next;
     }
 
-    return NULL;
+    if (ensure)
+    {
+        console_err("Can't get configuration parameter \"");
+        console_err(key);
+        console_err("\". Quitting the program...");
+        exit(0);
+    }
+
+    return dflt;
 }
 
 void
