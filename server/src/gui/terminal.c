@@ -28,12 +28,18 @@ void
 insert_entry(char *text)
 {
     GtkTextBuffer *buffer;
+    GtkTextMark *mark;
     GtkTextIter end;
 
     // Get the actual buffer for the entry opened and in sert the text
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
     gtk_text_buffer_get_end_iter(buffer, &end);
     gtk_text_buffer_insert(buffer, &end, text, strlen(text));
+
+    mark = gtk_text_buffer_get_insert(buffer);
+
+    // Set the iter to the new end and move the scrollbar to the new end
+    gtk_text_view_scroll_to_mark(text_view, mark, 0.0, TRUE, 1, 1);
 }
 
 void
@@ -62,6 +68,10 @@ terminal_listen_client(void *args, GuiEnv *env)
 {
     char data[TCP_CHUNK_SIZE];
     ssize_t received;
+    GtkTreeSelection *selection;
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    GtkTreeView *client_tree;
 
     while (1)
     {
@@ -78,7 +88,21 @@ terminal_listen_client(void *args, GuiEnv *env)
     }
 
     terminal_destroy();
-    delete_client(NULL, _env);
+
+    // Initialize the client_tree and the model from data
+    client_tree = GTK_TREE_VIEW(_env->client_tree);
+    model = gtk_tree_view_get_model(client_tree);
+
+    // Get the selected client of the client list
+    selection = gtk_tree_view_get_selection(client_tree);
+    gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
+
+    // If a client is selected, remove it and close the socket connection
+    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    {
+        // Remove the client from the list
+        gtk_list_store_remove((GtkListStore *)_env->store, &iter);
+    }
 
     log_add(_env->text_view, "Client exited", "Stopping terminal...");
     pthread_exit(NULL);
@@ -182,7 +206,10 @@ terminal_start(TcpClient *client, GuiEnv *env)
     set_terminal_colors(entry, text_view);
 
     // Read client output
-    pthread_create(&thread, NULL, terminal_listen_client, env);
+    pthread_create(&thread, NULL, (void *)terminal_listen_client, env);
+
+    // Set the user focus on the entry
+    gtk_widget_grab_focus(entry);
 
     gtk_widget_show_all(window);
 }
