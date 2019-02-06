@@ -196,6 +196,9 @@ void
 stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
     GObject *startButton;
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    GtkTreeView *client_tree;
 
     gtk_widget_set_sensitive(widget, 0);
 
@@ -205,4 +208,18 @@ stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
     tcp_stop();
 
     log_add(data->text_view, "Stopped", "Server");
+
+    log_add(data->text_view, "Removing", "Clients");
+
+    // Initialize the client_tree and the model from data
+    client_tree = GTK_TREE_VIEW(data->client_tree);
+    model = gtk_tree_view_get_model(client_tree);
+
+    // Removes all the clients
+    while (gtk_tree_model_get_iter_first(model, &iter))
+    {
+        gtk_list_store_remove((GtkListStore *)data->store, &iter);
+    };
+
+    log_add(data->text_view, "Clients succesfully", "Removed");
 }
