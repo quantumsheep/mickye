@@ -9,13 +9,14 @@ Don't question the name, it doesn't matter.
 - Sqlite 3
 
 ## Tested operating systems
-| Operating System | Status |
-|------------------|--------|
-| Windows          | ❌     |
+| Operating System | Status  |
+|------------------|---------|
+| Windows          | ❌      |
 | MacOS            | ❔      |
 | Arch Linux       | ❔      |
 | CentOS           | ❔      |
-| Debian / Ubuntu  | ✔️     |
+| Debian           | ✔️       |
+| Ubuntu           | ✔️       |
 | Fedora           | ❔      |
 | Gentoo           | ❔      |
 | openSUSE         | ❔      |
