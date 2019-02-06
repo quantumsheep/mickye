@@ -60,11 +60,6 @@ terminal_send_to_client()
 void *
 terminal_listen_client(void *args, GuiEnv *env)
 {
-    GtkTreeSelection *selection;
-    GtkTreeIter iter;
-    GtkTreeModel *model;
-    GtkTreeView *client_tree;
-    GValue value = G_VALUE_INIT;
     char data[TCP_CHUNK_SIZE];
     ssize_t received;
 
