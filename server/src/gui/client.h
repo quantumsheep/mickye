@@ -15,6 +15,9 @@ enum
     CLIENT_DISCONNECTED
 };
 
+gboolean
+client_set_disconnect(int id, GuiEnv *data);
+
 void
 client_add(GtkListStore *store, TcpClient *client, int status);
 
