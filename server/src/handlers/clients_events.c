@@ -6,7 +6,7 @@ GtkWindow *rename_window;
 
 /*
 *   Function to connect to a client after clicking one the "connect" options of the menu
-*   Asking for :
+*   
 *   @param      _      the unused widget for the menu option
 *   @param      data   GuiEnv data set in main
 */
@@ -18,7 +18,7 @@ popup_connect(GtkWidget *_, GuiEnv *data)
 
 /*
 *   Function to rename a client after clicking one the "rename" options of the menu
-*   Asking for :
+*   
 *   @param      entry       the widget for the entry who have the entered text
 *   @param      data        GuiEnv data set in main
 */
@@ -71,7 +71,7 @@ rename_client(GtkWidget *entry, GuiEnv *data)
 
 /*
 *   Function to create the popup rename event
-*   Asking for :
+*   
 *   @param      _      the unused widget for the rename popup window
 *   @param      data   GuiEnv data set in main
 */
@@ -98,7 +98,7 @@ popup_rename(GtkWidget *_, GuiEnv *data)
 
 /*
 *   Function to delete a client after clicking one the "delete" options of the menu
-*   Asking for :
+*   
 *   @param      _      the unused widget for the menu option
 *   @param      data   GuiEnv data set in main
 */
@@ -136,7 +136,7 @@ delete_client(GtkWidget *_, GuiEnv *data)
 
 /*
 *   Function to create the menu list on right click
-*   Asking for :
+*   
 *   @param      data    GuiEnv data set in main
 *   @param      event   the event catched from the user click
 */
@@ -173,7 +173,7 @@ show_popmenu(GuiEnv *data, GdkEventButton *event)
 
 /*
 *   Boolean function to catch the click of the user
-*   Asking for :
+*   
 *   @param      _           the unused widget for the tree_view
 *   @param      event       the event type of the click (right click or not ?)
 *   @param      data        GuiEnv data set in main
@@ -192,7 +192,7 @@ trigger_clients_button_press(GtkWidget *_, GdkEventButton *event, GuiEnv *data)
 
 /*
 *   Function to catch the popup_menu event
-*   Asking for :
+*   
 *   @param      _      the unused widget for the tree_view
 *   @param      data   GuiEnv data set in main
 */

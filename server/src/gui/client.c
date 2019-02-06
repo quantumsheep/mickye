@@ -12,7 +12,7 @@ enum
 
 /*
 *   Function to add client in the ListStore (GtkListStore) corresponding to the list of clients
-*   Asking for :
+*   
 *   @param      store      the main ListStore of the client list window
 *   @param      client     a TcpClient object corresponding of a TcpClient struct
 *   @param      status     a int corresponding to the status of the client (connected, disconnected...)
@@ -43,7 +43,7 @@ client_add(GtkListStore *store, TcpClient *client, int status)
 
 /*
 *   Function to connect with a client in the ListStore (GtkListStore) corresponding to the list of clients
-*   Asking for :
+*   
 *   @param      _      a unused widget (fault is going to gui_add_handler function...) can be NULL
 *   @param      __     a unused builder (fault is going to gui_add_handler function...) can be NULL
 *   @param      data   GuiEnv data set in main

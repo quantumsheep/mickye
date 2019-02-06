@@ -2,7 +2,7 @@
 
 /*
 *   Function to add a column the the main client tree
-*   Asking for :
+*   
 *   @param      client_tree     the main client_tree of the client list
 *   @param      name            the name of the new column
 *   @param      position        the position of the column
@@ -18,7 +18,7 @@ add_column(GtkWidget *client_tree, char *name, int position)
 
 /*
 *   Function to load the client list in the main tree_view
-*   Asking for :
+*   
 *   @param      builder         the main builder, who construct the elements
 *   @param      store           the tree_view model (for a lcient in the list)
 *   @param      client_tree     the main client_tree of the client list
@@ -46,7 +46,7 @@ load_clients_list(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tr
 
 /*
 *   Function to load main VTE terminal
-*   Asking for :
+*   
 *   @param      builder         the main builder, who construct the elements
 */
 void
@@ -89,7 +89,7 @@ load_terminal(GtkBuilder *builder)
 
 /*
 *   Function to load the logs part of the main window
-*   Asking for :
+*   
 *   @param      builder         the main builder, who construct the elements
 *   @param      text_view       the log text_view, who deserve the logs
 */
@@ -111,7 +111,7 @@ load_logs(GtkBuilder *builder, GtkTextView *text_view)
 
 /*
 *   Function to load the main interface components
-*   Asking for :
+*   
 *   @param      builder         the main builder, who construct the elements
 *   @param      text_view       the log text_view, who deserve the logs
 *   @param      store           the three_view model, of the client list

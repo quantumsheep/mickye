@@ -39,7 +39,7 @@ insert_entry(char *text)
     mark = gtk_text_buffer_get_insert(buffer);
 
     // Set the iter to the new end and move the scrollbar to the new end
-    gtk_text_view_scroll_to_mark(text_view, mark, 0.0, TRUE, 1, 1);
+    gtk_text_view_scroll_to_mark((GtkTextView *)text_view, mark, 0.0, TRUE, 0.5, 1);
 }
 
 void
