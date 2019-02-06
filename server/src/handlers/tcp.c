@@ -113,6 +113,8 @@ tcp_bind(int socket, struct sockaddr_in *addr)
 void *
 tcp_init()
 {
+    TcpClientChain *client;
+
     /**
      * Server informations
      */
@@ -169,8 +171,15 @@ tcp_init()
      * Annhilating the sockets
      */
     tcp_annihilate_socket(server_socket);
-    while (--connections >= 0)
-        tcp_annihilate_socket(clients[connections]);
+
+    client = clients;
+
+    while (client != NULL)
+    {
+        tcp_annihilate_socket(client->client->socket);
+
+        client = client->next;
+    }
 
     pthread_exit(NULL);
 }
