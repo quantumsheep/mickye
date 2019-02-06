@@ -1,10 +1,11 @@
+#include "config.h"
 #include "database/db.h"
 #include "database/db_initializer.h"
 #include "gui/builder.h"
 #include "gui/client.h"
 #include "gui/loader.h"
-#include "handlers/tcp.h"
 #include "handlers/clients_events.h"
+#include "handlers/tcp.h"
 #include <gtk/gtk.h>
 
 int
@@ -19,6 +20,11 @@ main(int argc, char **argv)
     GtkWidget *client_tree;
 
     GObject *window;
+
+    /**
+     * Generate the CONFIG super global
+     */
+    config_update();
 
     db = db_open();
     db_init(db);
@@ -64,7 +70,7 @@ main(int argc, char **argv)
     g_signal_connect(client_tree, "popup-menu", (GCallback)on_popup, &gui_env);
 
     window = gtk_builder_get_object(builder, "window");
-    gtk_window_set_position ((GtkWindow *)window, GTK_WIN_POS_CENTER);
+    gtk_window_set_position((GtkWindow *)window, GTK_WIN_POS_CENTER);
 
     // client_add(store, "0.0.0.0", 1);
 
