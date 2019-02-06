@@ -38,7 +38,7 @@ main(int argc, char **argv)
         return 1;
     }
 
-    // Creatin the client_tree (for listing the clients), the store (the client tree model of a listed client) and the text_view (text of the logs)
+    // Creating the client_tree (for listing the clients), the store (the client tree model of a listed client) and the text_view (text of the logs)
     client_tree = gtk_tree_view_new();
     store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);
     text_view = GTK_TEXT_VIEW(gtk_text_view_new());
