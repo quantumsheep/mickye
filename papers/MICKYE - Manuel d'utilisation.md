@@ -56,10 +56,11 @@ Une fois les dépendances installées sans erreurs, vous pouvez commencer la com
 - Déplacez-vous dans `/client` puis lancez la commande de compilation `make`.
 - Déplacez-vous dans `/server` puis lancez la commande de compilation `make`
 - Ou rentrez `cd client && make && cd ../server && make`
+- Ou lancez `build.sh`
 
 Enfin, une fois la compilation terminée, vous pouvez commencer à utiliser Mickye.
 
-Entrez la commande `./mickye` depuis `/server`. Si tout s’est déroulé correctement, vous devriez avoir une interface comme celle-ci qui viens de s’ouvrir :
+Entrez la commande `./mickye_server` depuis `/server`. Si tout s’est déroulé correctement, vous devriez avoir une interface comme celle-ci qui viens de s’ouvrir :
 
 ![SERVEUR](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/terminal-debian.png)
 
