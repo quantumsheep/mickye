@@ -11,8 +11,11 @@
 Shell shell;
 socket_t server = -1;
 
+/**
+ *  Read server's input and send it to the shell's stdin
+ */
 void *
-shell_stdin_from_server(void *args)
+shell_stdin_from_server(void *_)
 {
     char store[FD_CHUNK_SIZE];
 
@@ -37,8 +40,11 @@ shell_stdin_from_server(void *args)
     return NULL;
 }
 
+/**
+ *  Read shell's output and send it to the server
+ */
 void *
-shell_stdout_to_server(void *args)
+shell_stdout_to_server(void *_)
 {
     char store[FD_CHUNK_SIZE];
 
@@ -62,6 +68,9 @@ shell_stdout_to_server(void *args)
     return NULL;
 }
 
+/**
+ *  Open a shell and creating tunel beetween server and client endpoints
+ */
 void
 use_shell()
 {

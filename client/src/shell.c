@@ -3,6 +3,9 @@
 #define SHELL_SHELL "/bin/bash"
 #define SHELL_CMD ((char *[]){SHELL_SHELL, NULL})
 
+/**
+ *  Open a shell and get a Shell object
+ */
 Shell
 shell_open()
 {
@@ -66,6 +69,9 @@ shell_open()
     }
 }
 
+/**
+ *  Close a shell
+ */
 void
 shell_close(Shell shell)
 {

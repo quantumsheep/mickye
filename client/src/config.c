@@ -5,6 +5,11 @@
 
 Config *_conf = NULL;
 
+/**
+ *  Retrieve a configuration object or NULL if the wanted key doesn't exists
+ * 
+ *  @param       key         configuration key
+ */
 Config *
 config_select(char *key)
 {
@@ -27,6 +32,13 @@ config_select(char *key)
     return config;
 }
 
+/**
+ *  Retrieve a configuration object or NULL if the wanted key doesn't exists
+ * 
+ *  @param       key         configuration key
+ *  @param       dflt        default configuration value, returned if the key is not found in the configuration
+ *  @param       ensure      choose if you want to crash the app if the key is not found in the configuration
+ */
 char *
 config_get(char *key, char *dflt, int ensure)
 {
@@ -53,6 +65,12 @@ config_get(char *key, char *dflt, int ensure)
     return dflt;
 }
 
+/**
+ *  Define a key - value configuration
+ * 
+ *  @param       key         configuration key
+ *  @param       dflt        configuration value
+ */
 void
 config_set(char *key, char *value)
 {
@@ -82,6 +100,10 @@ config_set(char *key, char *value)
     }
 }
 
+/**
+ *  Update the configuration super global
+ *  A way of initializing the configuration file
+ */
 void
 config_update()
 {

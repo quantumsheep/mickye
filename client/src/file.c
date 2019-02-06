@@ -1,5 +1,10 @@
 #include "file.h"
 
+/**
+ *  Get the char length of a file
+ * 
+ *  @param       f          a file
+ */
 long
 file_size(FILE *f)
 {
@@ -16,6 +21,11 @@ file_size(FILE *f)
     return size;
 }
 
+/**
+ *  Read all the content of a file
+ * 
+ *  @param       f          the file
+ */
 char *
 file_readall(FILE *f)
 {
@@ -30,6 +40,11 @@ file_readall(FILE *f)
     return content;
 }
 
+/**
+ *  Read all the content of a file
+ * 
+ *  @param       path       the file's path
+ */
 char *
 file_read(const char *path)
 {

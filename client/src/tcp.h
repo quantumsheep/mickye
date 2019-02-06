@@ -15,12 +15,6 @@ void
 tcp_annihilate_socket(int socket);
 
 int
-tcp_send(socket_t fd, char *data);
-
-int
-tcp_receive(socket_t fd, char store[TCP_MAX_RECV_LEN]);
-
-int
 tcp_open(char *ip, int port);
 
 #endif

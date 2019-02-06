@@ -1,5 +1,8 @@
 #include "tcp.h"
 
+/**
+ *  Destroy a socket
+ */
 void
 tcp_annihilate_socket(int socket)
 {
@@ -7,18 +10,9 @@ tcp_annihilate_socket(int socket)
     close(socket);
 }
 
-int
-tcp_send(socket_t fd, char *data)
-{
-    return send(fd, data, strlen(data), 0);
-}
-
-int
-tcp_receive(socket_t fd, char store[TCP_MAX_RECV_LEN])
-{
-    return recv(fd, store, TCP_MAX_RECV_LEN, 0);
-}
-
+/**
+ *  Force open a tcp server (loop until it connects)
+ */
 socket_t
 tcp_open(char *ip, int port)
 {
