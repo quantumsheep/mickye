@@ -21,7 +21,7 @@ terminal_destroy()
 
 /*
 *   Function to insert a text (char*) into the terminal entry of a client
-*   
+*   Asking for :
 *   @param      text       the text to insert
 */
 void
@@ -39,7 +39,7 @@ insert_entry(char *text)
     mark = gtk_text_buffer_get_insert(buffer);
 
     // Set the iter to the new end and move the scrollbar to the new end
-    gtk_text_view_scroll_to_mark(text_view, mark, 0.0, TRUE, 1, 1);
+    gtk_text_view_scroll_to_mark((GtkTextView *)text_view, mark, 0.0, TRUE, 0.5, 1);
 }
 
 void
@@ -111,7 +111,7 @@ terminal_listen_client(void *args, GuiEnv *env)
 
 /*
 *   Function to set the colors of a new terminal
-*   
+*   Asking for :
 *   @param      entry           the entry of the terminal
 *   @param      text_view       the textview of the terminal
 */
@@ -158,7 +158,7 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
 
 /*
 *   Function to start a new terminal for a selected client
-*   
+*   Asking for :
 *   @param      client      the selected client already set
 *   @param      env         GuiEnv env set in main
 */
