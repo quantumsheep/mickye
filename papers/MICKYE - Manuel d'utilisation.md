@@ -13,17 +13,17 @@ Veuillez noter que cette application a été développer par eux passionnés de 
 Afin de pouvoir utiliser le projet il vous faudra tout d’abord un système d’exploitation baser sur un noyau Linux, **avec un environnement graphique d’installé pour le serveur mais pas pour le client.**
 
 Pour le moment les tests exécutez ont démontrés que le logiciel est compatible avec :
-Debian : 100 %
-Ubuntu : 100 %
+- Debian : 100 %
+- Ubuntu : 100 %
 
 **Les librairies sont disponibles dans les fichiers d’installation du projet.**
 
 En termes de librairies, il vous faudra disposer de :
-**GTK** (Pour l’interface graphique)
-**VTE** (Pour l’émulation de votre terminal)
-**SQLite3** (Pour gérer la base de donnée locale)
-**GCC** (pour compiler le projet)
-**MAKE** (pour compiler le projet)
+- **GTK** (Pour l’interface graphique)
+- **VTE** (Pour l’émulation de votre terminal)
+- **SQLite3** (Pour gérer la base de donnée locale)
+- **GCC** (pour compiler le projet)
+- **MAKE** (pour compiler le projet)
 
 Vous devrez disposez également :
 D’une carte réseau fonctionnelle.
@@ -53,11 +53,9 @@ Déplacez-vous dans le dossier du projet précédemment extrait à l’aide de c
 Lancez ensuite `./install_dep.sh` il s’agit du script bash d’installation de l’ensemble des dépendances liées au projet.
 
 Une fois les dépendances installées sans erreurs, vous pouvez commencer la compilation du client et du serveur :
-
-	Déplacez-vous dans `/client` puis lancez la commande de compilation `make`.
-	Déplacez-vous dans `/server` puis lancez la commande de compilation `make`
-
-	Ou rentrez `cd client && make && cd ../server && make`
+- Déplacez-vous dans `/client` puis lancez la commande de compilation `make`.
+- Déplacez-vous dans `/server` puis lancez la commande de compilation `make`
+- Ou rentrez `cd client && make && cd ../server && make`
 
 Enfin, une fois la compilation terminée, vous pouvez commencer à utiliser Mickye.
 
