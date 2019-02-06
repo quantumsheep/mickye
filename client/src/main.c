@@ -5,9 +5,10 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Shell shell;
-socket_t sock = -1;
+socket_t server = -1;
 
 void *
 shell_stdin_from_server(void *args)
@@ -18,13 +19,14 @@ shell_stdin_from_server(void *args)
     {
         memset(store, 0x00, FD_CHUNK_SIZE);
 
-        if (!fd_read(sock, store))
+        if (!fd_read(server, store))
         {
             puts("Server's stream ended...");
             break;
         }
 
         fd_write(shell.stdin, store);
+        fd_write(shell.stdin, "\n");
     }
 
     puts("Exiting reading...");
@@ -48,7 +50,9 @@ shell_stdout_to_server(void *args)
             break;
         }
 
-        fd_write(sock, store);
+        puts(store);
+
+        fd_write(server, store);
     }
 
     puts("Exiting writing...");
@@ -87,7 +91,7 @@ main(int argc, char **argv)
     while (1)
     {
         puts("Try opening a socket connection...");
-        sock = tcp_open("127.0.0.1", 3000);
+        server = tcp_open("127.0.0.1", 3000);
 
         puts("Connection established!");
         puts("Opening the shell...");

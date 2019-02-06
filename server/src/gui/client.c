@@ -65,7 +65,7 @@ client_connect(GtkWidget *_, GtkBuilder *builder, GuiEnv *data)
             {
                 log_add(data->text_view, "Trying to connect to", client->ipv4);
 
-                call_terminal(client->ipv4, 600, 300);
+                terminal_start(client);
             }
             else
             {

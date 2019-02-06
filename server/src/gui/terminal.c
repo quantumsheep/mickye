@@ -1,8 +1,11 @@
 #include "terminal.h"
+#include <errno.h>
 
 GtkWidget *entry;
 GtkWidget *text_view;
 GtkWidget *window;
+
+TcpClient *selected_client;
 
 void
 insert_entry(char *text)
@@ -16,17 +19,51 @@ insert_entry(char *text)
 }
 
 void
-return_entry()
+terminal_send_to_client()
 {
-    GtkEntryBuffer *Entrybuffer;
+    GtkEntryBuffer *buf;
     char *text;
 
-    Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
-    text = (char*)gtk_entry_buffer_get_text(Entrybuffer);
+    buf = gtk_entry_get_buffer(GTK_ENTRY(entry));
+    text = (char *)gtk_entry_buffer_get_text(buf);
 
+    insert_entry("$ ");
     insert_entry(text);
+    insert_entry("\n");
 
-    gtk_entry_buffer_delete_text(Entrybuffer, 0, strlen(text));
+    if (write(selected_client->socket, text, strlen(text)) == -1)
+    {
+        puts(strerror(errno));
+    }
+
+    gtk_entry_buffer_delete_text(buf, 0, strlen(text));
+}
+
+void *
+terminal_listen_client(void *args)
+{
+    char data[TCP_CHUNK_SIZE];
+    ssize_t received;
+
+    while (1)
+    {
+        received = read(selected_client->socket, data, TCP_CHUNK_SIZE);
+
+        if (received == -1)
+        {
+            break;
+        }
+        else if (received > 0)
+        {
+            puts(data);
+            insert_entry(data);
+        }
+    }
+
+    puts("Client exited - Stopping terminal...");
+
+    pthread_exit(NULL);
+    return NULL;
 }
 
 void
@@ -64,18 +101,24 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
 }
 
 void
-call_terminal(char *title, int width, int height)
+terminal_start(TcpClient *client)
 {
-    if(entry != NULL && window != NULL){
-        gtk_widget_destroy(entry);
-        gtk_window_close(GTK_WINDOW(window));
-    }
+    pthread_t thread;
+
     GtkWidget *box;
     GtkWidget *scrollbar;
 
+    if (entry != NULL && window != NULL)
+    {
+        gtk_widget_destroy(entry);
+        gtk_window_close(GTK_WINDOW(window));
+    }
+
+    selected_client = client;
+
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), title);
-    gtk_window_set_default_size(GTK_WINDOW(window), width, height);
+    gtk_window_set_title(GTK_WINDOW(window), client->ipv4);
+    gtk_window_set_default_size(GTK_WINDOW(window), TERMINAL_DEFAULT_WIDTH, TERMINAL_DEFAULT_HEIGH);
     gtk_window_set_position((GtkWindow *)window, GTK_WIN_POS_CENTER);
 
     box = gtk_box_new(TRUE, 0);
@@ -89,8 +132,16 @@ call_terminal(char *title, int width, int height)
     gtk_container_add(GTK_CONTAINER(scrollbar), text_view);
     gtk_box_pack_start(GTK_BOX(box), scrollbar, TRUE, TRUE, 0);
 
+    /**
+     * Read client's output
+     */
+    pthread_create(&thread, NULL, terminal_listen_client, NULL);
+
+    /**
+     * Read terminal input
+     */
     entry = gtk_entry_new();
-    g_signal_connect(entry, "activate", return_entry, NULL);
+    g_signal_connect(entry, "activate", terminal_send_to_client, NULL);
 
     gtk_box_pack_end(GTK_BOX(box), entry, FALSE, FALSE, 0);
 

@@ -12,6 +12,9 @@ tcp_get_client(int id)
 {
     TcpClientChain *client = clients;
 
+    /**
+     * Select the right client
+     */
     while (client != NULL && client->client->socket != id)
     {
         client = client->next;
@@ -34,46 +37,6 @@ tcp_annihilate_socket(int socket)
     close(socket);
 }
 
-void *
-socket_thread(void *arg)
-{
-    TcpClient *client;
-    char *data;
-    char client_data[TCP_CHUNK_SIZE];
-    ssize_t received;
-
-    client = (TcpClient *)arg;
-
-    while (1)
-    {
-        received = recv(client->socket, client_data, TCP_CHUNK_SIZE, 0);
-
-        if (received == -1)
-        {
-            break;
-        }
-        else if (received > 0)
-        {
-            // Send message to the client socket
-            pthread_mutex_lock(&lock);
-
-            data = (char *)calloc(sizeof(char), 20);
-
-            strcpy(data, "Hello Client : ");
-            strcat(data, client_data);
-            strcat(data, "\n");
-
-            pthread_mutex_unlock(&lock);
-            sleep(1);
-            send(client->socket, data, strlen(data), 0);
-
-            free(data);
-        }
-    }
-
-    pthread_exit(NULL);
-}
-
 void
 tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *storage)
 {
@@ -86,6 +49,7 @@ tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *st
      * Construct the client's structure
      */
     client = (TcpClient *)malloc(sizeof(TcpClient));
+    client->socket = socket;
 
     ipv4 = (struct sockaddr_in *)storage;
     ipv6 = (struct sockaddr_in6 *)storage;
@@ -108,8 +72,6 @@ tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *st
      * Add the client in the clients list
      */
     client_add(env->store, client, CLIENT_CONNECTED);
-
-    // return pthread_create(thread, NULL, socket_thread, (void *)client);
 }
 
 int
