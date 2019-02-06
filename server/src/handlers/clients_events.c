@@ -3,6 +3,7 @@
 GtkTextView *text_view;
 GtkWidget *entry;
 GtkWindow *rename_window;
+int client_id;
 
 /*
 *   Function to connect to a client after clicking one the "connect" options of the menu
@@ -16,6 +17,27 @@ popup_connect(GtkWidget *_, GuiEnv *data)
     client_connect(NULL, NULL, data);
 }
 
+void
+rename_client_from_iter(GtkTreeModel *model, GtkTreeIter iter, GValue value, GuiEnv *data, char *name)
+{
+    char *ipv4;
+    char *status;
+    int socket;
+
+    gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
+    socket = g_value_get_int(&value);
+    g_value_unset(&value);
+    gtk_tree_model_get_value(model, &iter, COL_IPV4, &value);
+    ipv4 = g_value_dup_string(&value);
+    g_value_unset(&value);
+    gtk_tree_model_get_value(model, &iter, COL_STATUS, &value);
+    status = g_value_dup_string(&value);
+    g_value_unset(&value);
+
+    gtk_list_store_remove((GtkListStore *)data->store, &iter);
+    gtk_list_store_insert_with_values(data->store, &iter, -1, COL_NAME, name, COL_SOCKET, socket, COL_IPV4, ipv4, COL_STATUS, status, -1);
+}
+
 /*
 *   Function to rename a client after clicking one the "rename" options of the menu
 *   
@@ -26,15 +48,12 @@ void
 rename_client(GtkWidget *entry, GuiEnv *data)
 {
     GtkEntryBuffer *Entrybuffer;
-    GtkTreeSelection *selection;
     GtkTreeIter iter;
     GtkTreeModel *model;
     GtkTreeView *client_tree;
     GValue value = G_VALUE_INIT;
     char *name;
-    char *ipv4;
-    char *status;
-    int socket;
+    int validate;
 
     // Initialize client_tree, model, the buffer of the entry, the new asked name of all the widgets in popup rename window
     client_tree = GTK_TREE_VIEW(data->client_tree);
@@ -42,25 +61,28 @@ rename_client(GtkWidget *entry, GuiEnv *data)
     Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
     name = (char *)gtk_entry_buffer_get_text(Entrybuffer);
 
-    //Getting the selected client of the client list
-    selection = gtk_tree_view_get_selection(client_tree);
-    gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
-
-    //If a client is selected, get the socket value, get the ipv4 value, get the status of the client, remove it and recreate it with the new asked name
-    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    if (gtk_tree_model_get_iter_first(model, &iter))
     {
         gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
-        socket = g_value_get_int(&value);
+        validate = g_value_get_int(&value);
         g_value_unset(&value);
-        gtk_tree_model_get_value(model, &iter, COL_IPV4, &value);
-        ipv4 = g_value_dup_string(&value);
-        g_value_unset(&value);
-        gtk_tree_model_get_value(model, &iter, COL_STATUS, &value);
-        status = g_value_dup_string(&value);
-        g_value_unset(&value);
-
-        gtk_list_store_remove((GtkListStore *)data->store, &iter);
-        gtk_list_store_insert_with_values(data->store, &iter, -1, COL_NAME, name, COL_SOCKET, socket, COL_IPV4, ipv4, COL_STATUS, status, -1);
+        if (validate == client_id)
+        {
+            rename_client_from_iter(model, iter, value, data, name);
+        }
+        else
+        {
+            if (gtk_tree_model_iter_next(model, &iter))
+            {
+                gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
+                validate = g_value_get_int(&value);
+                g_value_unset(&value);
+                if (validate == client_id)
+                {
+                    rename_client_from_iter(model, iter, value, data, name);
+                }
+            }
+        }
     }
 
     // Remove the entry text after ENTER, destroy the entry and the rename popup window
@@ -78,6 +100,23 @@ rename_client(GtkWidget *entry, GuiEnv *data)
 void
 popup_rename(GtkWidget *_, GuiEnv *data)
 {
+    GtkTreeSelection *selection;
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    GValue value = G_VALUE_INIT;
+
+    //Getting the selected client of the client list
+    selection = gtk_tree_view_get_selection((GtkTreeView *)data->client_tree);
+    gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
+
+    //If a client is selected, get the socket value, get the ipv4 value, get the status of the client, remove it and recreate it with the new asked name
+    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    {
+        gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
+        client_id = g_value_get_int(&value);
+        g_value_unset(&value);
+    }
+
     // Create the popup rename popup window
     rename_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(rename_window, "Rename");
