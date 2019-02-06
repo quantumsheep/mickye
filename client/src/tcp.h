@@ -11,6 +11,9 @@
 
 typedef int socket_t;
 
+void
+tcp_annihilate_socket(int socket);
+
 int
 tcp_send(socket_t fd, char *data);
 

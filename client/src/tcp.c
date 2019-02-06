@@ -1,5 +1,12 @@
 #include "tcp.h"
 
+void
+tcp_annihilate_socket(int socket)
+{
+    shutdown(socket, SHUT_RDWR);
+    close(socket);
+}
+
 int
 tcp_send(socket_t fd, char *data)
 {
@@ -32,7 +39,8 @@ tcp_open(char *ip, int port)
     server.sin_port = htons(port);
 
     // Connect to the server
-    while (connect(fd, (struct sockaddr *)&server, sizeof(server)) < 0);
+    while (connect(fd, (struct sockaddr *)&server, sizeof(server)) < 0)
+        ;
 
     return fd;
 }

@@ -8,6 +8,16 @@ GtkWidget *window;
 TcpClient *selected_client;
 
 void
+terminal_destroy()
+{
+    if (entry != NULL && window != NULL)
+    {
+        gtk_widget_destroy(entry);
+        gtk_window_close(GTK_WINDOW(window));
+    }
+}
+
+void
 insert_entry(char *text)
 {
     GtkTextBuffer *buffer;
@@ -49,18 +59,22 @@ terminal_listen_client(void *args)
     {
         received = read(selected_client->socket, data, TCP_CHUNK_SIZE);
 
-        if (received == -1)
+        printf("%d\n", received);
+
+        if (received > 0)
+        {
+            insert_entry(data);
+        }
+        else
         {
             break;
         }
-        else if (received > 0)
-        {
-            puts(data);
-            insert_entry(data);
-        }
+        
     }
 
     puts("Client exited - Stopping terminal...");
+
+    terminal_destroy();
 
     pthread_exit(NULL);
     return NULL;
@@ -108,11 +122,7 @@ terminal_start(TcpClient *client)
     GtkWidget *box;
     GtkWidget *scrollbar;
 
-    if (entry != NULL && window != NULL)
-    {
-        gtk_widget_destroy(entry);
-        gtk_window_close(GTK_WINDOW(window));
-    }
+    terminal_destroy();
 
     selected_client = client;
 

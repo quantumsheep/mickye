@@ -57,6 +57,8 @@ shell_stdout_to_server(void *args)
 
     puts("Exiting writing...");
 
+    shell_close(shell);
+    tcp_annihilate_socket(server);
     pthread_exit(NULL);
     return NULL;
 }
