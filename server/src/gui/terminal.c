@@ -68,10 +68,11 @@ terminal_listen_client(void *args, GuiEnv *env)
 {
     char data[TCP_CHUNK_SIZE];
     ssize_t received;
-    GtkTreeSelection *selection;
     GtkTreeIter iter;
     GtkTreeModel *model;
     GtkTreeView *client_tree;
+    GValue value = G_VALUE_INIT;
+    int client_id;
 
     while (1)
     {
@@ -93,15 +94,31 @@ terminal_listen_client(void *args, GuiEnv *env)
     client_tree = GTK_TREE_VIEW(_env->client_tree);
     model = gtk_tree_view_get_model(client_tree);
 
-    // Get the selected client of the client list
-    selection = gtk_tree_view_get_selection(client_tree);
-    gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
-
-    // If a client is selected, remove it and close the socket connection
-    if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    // If the first iter exist, set it, check if the socket is the same as terminal, if yes delete it, else check the next iter etc...
+    if (gtk_tree_model_get_iter_first(model, &iter))
     {
-        // Remove the client from the list
-        gtk_list_store_remove((GtkListStore *)_env->store, &iter);
+        gtk_tree_model_get_value(model, &iter, 1, &value);
+        client_id = g_value_get_int(&value);
+        g_value_unset(&value);
+
+        if (client_id == _selected_client->socket)
+        {
+            gtk_list_store_remove((GtkListStore *)_env->store, &iter);
+        }
+        else
+        {
+            while (gtk_tree_model_iter_next(model, &iter))
+            {
+                gtk_tree_model_get_value(model, &iter, 1, &value);
+                client_id = g_value_get_int(&value);
+                g_value_unset(&value);
+
+                if (client_id == _selected_client->socket)
+                {
+                    gtk_list_store_remove((GtkListStore *)_env->store, &iter);
+                }
+            };
+        }
     }
 
     log_add(_env->text_view, "Client exited", "Stopping terminal...");
