@@ -46,7 +46,7 @@ shell_open()
         execv(SHELL_SHELL, SHELL_CMD);
 
         /* It's useless to return it but the compiler will like it */
-        return shell;
+        return (Shell){0};
     }
     else
     {
