@@ -46,7 +46,7 @@ config_get(char *key, char *dflt, int ensure)
     {
         console_err("Can't get configuration parameter \"");
         console_err(key);
-        console_err("\". Quitting the program...");
+        console_err("\".\nQuitting the program...\n");
         exit(0);
     }
 
