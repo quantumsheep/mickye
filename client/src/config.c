@@ -90,6 +90,14 @@ config_update()
 
     config = file_read(CONFIG_PATH);
 
+    if (config == NULL)
+    {
+        console_err("Configuration file not found: ");
+        console_err(CONFIG_PATH);
+        console_err(".\nQuitting the program...\n");
+        exit(1);
+    }
+
     line = strtok(config, "\n");
 
     while (line != NULL)
