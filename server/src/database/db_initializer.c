@@ -3,7 +3,6 @@
 struct _defined_tables_t
 {
     int log;
-    int client;
 };
 
 int
@@ -13,7 +12,6 @@ db_installed(Database *db)
     char *name;
     struct _defined_tables_t defined;
     defined.log = 0;
-    defined.client = 0;
 
     DatabaseStatement statement;
 
@@ -25,11 +23,9 @@ db_installed(Database *db)
 
         if (strcmp(name, "log"))
             defined.log = 1;
-        else if (strcmp(name, "client"))
-            defined.client = 1;
     }
 
-    return defined.log && defined.client;
+    return defined.log;
 }
 
 void
