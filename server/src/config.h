@@ -8,7 +8,7 @@
 
 #define CONFIG_PATH "options.conf"
 
-#define CONFIG (config_get())
+#define CONFIG(key) (config_get(key))
 
 typedef struct config_t Config;
 struct config_t
