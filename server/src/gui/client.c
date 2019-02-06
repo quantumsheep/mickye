@@ -80,7 +80,7 @@ client_set_disconnect(int id, GuiEnv *data)
 *   Asking for :
 *   @param      store      the main ListStore of the client list window
 *   @param      client     a TcpClient object corresponding of a TcpClient struct
-*   @param      status      a int corresponding to the status of the client (connected, disconnected...)
+*   @param      status     a int corresponding to the status of the client (connected, disconnected...)
 */
 void
 client_add(GtkListStore *store, TcpClient *client, int status)

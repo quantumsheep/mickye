@@ -5,12 +5,24 @@ GtkTextView *text_view;
 GtkWidget *entry;
 GtkWindow *rename_window;
 
+/*
+*   Function to connect to a client after clicking one the "connect" options of the popup
+*   Asking for :
+*   @param      _      the unused wiget for the menu option
+*   @param      data   GuiEnv data set in main
+*/
 void
-popup_connect(GtkWidget *menu_connect_item, GuiEnv *data)
+popup_connect(GtkWidget *_, GuiEnv *data)
 {
     client_connect(NULL, NULL, data);
 }
 
+/*
+*   Function to rename a client after clicking one the "rename" options of the popup
+*   Asking for :
+*   @param      entry       the widget for the entry who have the entered text
+*   @param      data        GuiEnv data set in main
+*/
 void
 rename_client(GtkWidget *entry, GuiEnv *data)
 {
