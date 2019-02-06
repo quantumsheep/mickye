@@ -1,3 +1,4 @@
+#include "config.h"
 #include "fd.h"
 #include "shell.h"
 #include "tcp.h"
@@ -88,10 +89,18 @@ use_shell()
 int
 main(int argc, char **argv)
 {
+    char *host;
+    int port;
+
+    config_update();
+
+    host = CONFIG_ENSURE("server_host");
+    port = atoi(CONFIG_ENSURE("server_port"));
+
     while (1)
     {
         puts("Try opening a socket connection...");
-        server = tcp_open("127.0.0.1", 3000);
+        server = tcp_open(host, port);
 
         puts("Connection established!");
         puts("Opening the shell...");
