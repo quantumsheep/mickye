@@ -1,30 +1,30 @@
 #include "tcp.h"
 
-char buffer[TCP_CHUNK_SIZE];
-
-pthread_t server_thread;
+GuiEnv *env = NULL;
+TcpClientChain *clients = NULL;
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-GuiEnv *env = NULL;
-
 int server_socket;
 
-void
-tcp_stop()
+TcpClient *
+tcp_get_client(int id)
 {
-    tcp_annihilate_socket(server_socket);
-}
+    TcpClientChain *client = clients;
 
-int
-tcp_bind(int socket, struct sockaddr_in *addr)
-{
-    int val = 1;
+    while (client != NULL && client->client->socket != id)
+    {
+        client = client->next;
+    }
 
-    setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
-    setsockopt(socket, SOL_SOCKET, SO_REUSEPORT, &val, sizeof(val));
-
-    return bind(socket, (struct sockaddr *)addr, sizeof(*addr));
+    if (client == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        return client->client;
+    }
 }
 
 void
@@ -38,17 +38,15 @@ void *
 socket_thread(void *arg)
 {
     TcpClient *client;
-    char *message;
-    char client_message[TCP_CHUNK_SIZE];
+    char *data;
+    char client_data[TCP_CHUNK_SIZE];
     ssize_t received;
 
     client = (TcpClient *)arg;
 
-    client_add(env->store, client->ipv4, CLIENT_CONNECTED);
-
     while (1)
     {
-        received = recv(client->socket, client_message, TCP_CHUNK_SIZE, 0);
+        received = recv(client->socket, client_data, TCP_CHUNK_SIZE, 0);
 
         if (received == -1)
         {
@@ -59,29 +57,35 @@ socket_thread(void *arg)
             // Send message to the client socket
             pthread_mutex_lock(&lock);
 
-            message = (char *)malloc(sizeof(client_message) + 20);
+            data = (char *)calloc(sizeof(char), 20);
 
-            strcpy(message, "Hello Client : ");
-            strcat(message, client_message);
-            strcat(message, "\n");
-            strcpy(buffer, message);
-            free(message);
+            strcpy(data, "Hello Client : ");
+            strcat(data, client_data);
+            strcat(data, "\n");
 
             pthread_mutex_unlock(&lock);
             sleep(1);
-            send(client->socket, buffer, strlen(buffer), 0);
+            send(client->socket, data, strlen(data), 0);
+
+            free(data);
         }
     }
 
     pthread_exit(NULL);
 }
 
-int
+void
 tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *storage)
 {
-    TcpClient *client = (TcpClient *)calloc(sizeof(TcpClient), 1);
+    TcpClient *client;
+
     struct sockaddr_in *ipv4;
     struct sockaddr_in6 *ipv6;
+
+    /**
+     * Construct the client's structure
+     */
+    client = (TcpClient *)malloc(sizeof(TcpClient));
 
     ipv4 = (struct sockaddr_in *)storage;
     ipv6 = (struct sockaddr_in6 *)storage;
@@ -92,7 +96,31 @@ tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *st
     memset(client->ipv6, 0x00, INET6_ADDRSTRLEN);
     inet_ntop(AF_INET6, &(ipv6->sin6_addr), client->ipv6, INET6_ADDRSTRLEN);
 
-    return pthread_create(thread, NULL, socket_thread, (void *)client);
+    /**
+     * Add a client to the global clients
+     */
+    TcpClientChain *new = (TcpClientChain *)malloc(sizeof(TcpClientChain));
+    new->client = client;
+    new->next = clients;
+    clients = new;
+
+    /**
+     * Add the client in the clients list
+     */
+    client_add(env->store, client, CLIENT_CONNECTED);
+
+    // return pthread_create(thread, NULL, socket_thread, (void *)client);
+}
+
+int
+tcp_bind(int socket, struct sockaddr_in *addr)
+{
+    int val = 1;
+
+    setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+    setsockopt(socket, SOL_SOCKET, SO_REUSEPORT, &val, sizeof(val));
+
+    return bind(socket, (struct sockaddr *)addr, sizeof(*addr));
 }
 
 void *
@@ -155,18 +183,13 @@ tcp_init()
             break;
         }
 
-        if (tcp_create_connection(&tid[connections], client_socket, &storage) != 0)
-        {
-            printf("Thread N°%d can't be created.", connections);
-        }
-        else
-        {
-            clients[connections] = client_socket;
+        tcp_create_connection(&tid[connections], client_socket, &storage);
 
-            if (++connections >= 64)
-            {
-                pthread_join(tid[connections - 1], NULL);
-            }
+        clients[connections] = client_socket;
+
+        if (++connections >= 64)
+        {
+            pthread_join(tid[connections - 1], NULL);
         }
     }
 
@@ -183,21 +206,28 @@ tcp_init()
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
+    pthread_t server_thread;
     GObject *stopButton;
-
-    gtk_widget_set_sensitive(widget, 0);
-
-    stopButton = gtk_builder_get_object(builder, "stop");
-    gtk_widget_set_sensitive(GTK_WIDGET(stopButton), 1);
 
     if (env == NULL)
     {
         env = data;
     }
 
+    gtk_widget_set_sensitive(widget, 0);
+
+    stopButton = gtk_builder_get_object(builder, "stop");
+    gtk_widget_set_sensitive(GTK_WIDGET(stopButton), 1);
+
     pthread_create(&server_thread, NULL, tcp_init, NULL);
 
     log_add(data->text_view, "Started", "Server");
+}
+
+void
+tcp_stop()
+{
+    tcp_annihilate_socket(server_socket);
 }
 
 void

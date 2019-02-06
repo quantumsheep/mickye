@@ -1,6 +1,6 @@
 #include "window.h"
 
-void
+GtkWindow *
 create_window(char *title, int width, int height)
 {
     GtkWindow *terminal_window;
@@ -9,7 +9,7 @@ create_window(char *title, int width, int height)
     gtk_window_set_title(terminal_window, title);
     gtk_window_set_default_size(terminal_window, width, height);
 
-    gtk_widget_show((GtkWidget *)terminal_window);
+    return terminal_window;
 }
 
 void

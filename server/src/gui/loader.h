@@ -8,6 +8,8 @@
 enum
 {
     COL_NAME = 0,
+    COL_SOCKET,
+    COL_IPV4,
     COL_STATUS,
     NUM_COLS
 };

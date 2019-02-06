@@ -3,16 +3,18 @@
 enum
 {
     COL_NAME = 0,
+    COL_SOCKET,
+    COL_IPV4,
     COL_STATUS,
     NUM_COLS
 };
 
 void
-client_add(GtkListStore *store, char *ip_str, int status)
+client_add(GtkListStore *store, TcpClient *client, int status)
 {
     GtkTreeIter iter;
     char *status_str;
-
+    
     switch (status)
     {
     case CLIENT_CONNECTED:
@@ -26,7 +28,7 @@ client_add(GtkListStore *store, char *ip_str, int status)
         break;
     }
 
-    gtk_list_store_insert_with_values(store, &iter, -1, COL_NAME, ip_str, COL_STATUS, status_str, -1);
+    gtk_list_store_insert_with_values(store, &iter, -1, COL_NAME, "", COL_SOCKET, client->socket, COL_IPV4, client->ipv4, COL_STATUS, status_str, -1);
 }
 
 void
@@ -34,10 +36,13 @@ client_connect(GtkWidget *_, GtkBuilder *builder, GuiEnv *data)
 {
     GtkTreeSelection *selection;
     GtkTreeIter iter;
-    GValue value = {0,};
+    GValue value = {
+        0};
     GtkTreeModel *model;
     GtkTreeView *client_tree;
-    char selected_ip[200];
+
+    TcpClient *client = NULL;
+    int client_id = -1;
 
     client_tree = GTK_TREE_VIEW(data->client_tree);
     model = gtk_tree_view_get_model(client_tree);
@@ -47,14 +52,30 @@ client_connect(GtkWidget *_, GtkBuilder *builder, GuiEnv *data)
 
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
     {
-        gtk_tree_model_get_value(model, &iter, 0, &value);
+        gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
 
-        strcpy(selected_ip, g_value_dup_string(&value));
+        client_id = g_value_get_int(&value);
         g_value_unset(&value);
 
-        log_add(data->text_view, "Trying to connect to", selected_ip);
+        if (client_id)
+        {
+            client = tcp_get_client(client_id);
 
-        call_terminal(selected_ip, 600, 300);
+            if (client != NULL)
+            {
+                log_add(data->text_view, "Trying to connect to", client->ipv4);
+
+                call_terminal(client->ipv4, 600, 300);
+            }
+            else
+            {
+                log_add(data->text_view, "Failed to connect", "Can't get client informations.");
+            }
+        }
+        else
+        {
+            log_add(data->text_view, "Failed to connect", "Can't get client ID.");
+        }
     }
     else
     {
