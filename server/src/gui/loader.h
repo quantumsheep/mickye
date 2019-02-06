@@ -15,7 +15,7 @@ enum
 };
 
 void
-load_clients(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tree);
+load_clients_list(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tree);
 
 void
 load_terminal(GtkBuilder *builder);
