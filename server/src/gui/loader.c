@@ -36,14 +36,16 @@ load_terminal(GtkBuilder *builder)
     g_strfreev(envp);
 
     terminal = gtk_builder_get_object(builder, "terminal");
-    vte_terminal_spawn_sync(VTE_TERMINAL(terminal), VTE_PTY_DEFAULT,
-                            NULL,       /* working directory  */
-                            command,    /* command */
-                            NULL,       /* environment */
-                            0,          /* spawn flags */
-                            NULL, NULL, /* child setup */
-                            NULL,       /* child pid */
-                            NULL, NULL);
+    vte_terminal_spawn_async(VTE_TERMINAL(terminal), VTE_PTY_DEFAULT,
+                             NULL,       /* working directory  */
+                             command,    /* command */
+                             NULL,       /* environment */
+                             0,          /* spawn flags */
+                             NULL, NULL, /* child setup */
+                             NULL,       /* child pid */
+                             30 * 1000,  /* time before timeout */
+                             NULL,
+                             NULL, NULL);
 }
 
 void
