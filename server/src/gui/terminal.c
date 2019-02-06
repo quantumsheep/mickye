@@ -60,8 +60,6 @@ terminal_listen_client(void *args)
     {
         received = read(_selected_client->socket, data, TCP_CHUNK_SIZE);
 
-        printf("%d\n", received);
-
         if (received > 0)
         {
             insert_entry(data);
@@ -78,7 +76,7 @@ terminal_listen_client(void *args)
 
     client_set_disconnect(_selected_client->socket, _env);
 
-        pthread_exit(NULL);
+    pthread_exit(NULL);
     return NULL;
 }
 
