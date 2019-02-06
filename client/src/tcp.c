@@ -2,6 +2,8 @@
 
 /**
  *  Destroy a socket
+ * 
+ *  @param      socket      the socket
  */
 void
 tcp_annihilate_socket(int socket)
@@ -12,6 +14,9 @@ tcp_annihilate_socket(int socket)
 
 /**
  *  Force open a tcp server (loop until it connects)
+ * 
+ *  @param      ip          the target's host/ip
+ *  @param      port        the target's port 
  */
 socket_t
 tcp_open(char *ip, int port)

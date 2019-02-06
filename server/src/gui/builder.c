@@ -8,13 +8,24 @@ struct gui_callback_params_t
     void *data;
 };
 
+/**
+ *  gui_add_handler's event callback middleware
+ */
 static void
-_gui_caller(GtkWidget *widget, gpointer data)
+_gui_caller(GtkWidget *widget, GUICallbackParams *params)
 {
-    GUICallbackParams *params = data;
     params->f(widget, params->builder, params->data);
 }
 
+/**
+ *  Define an event to a GUI element
+ * 
+ *  @param      builder         the builder
+ *  @param      id              the element id
+ *  @param      on              the event to listen to
+ *  @param      callback        the callback
+ *  @param      data            a GuiEnv object (will be passed in the callback)
+ */
 void
 gui_add_handler(GtkBuilder *builder, char *id, char *on, void(*callback), GuiEnv *data)
 {
@@ -32,6 +43,9 @@ gui_add_handler(GtkBuilder *builder, char *id, char *on, void(*callback), GuiEnv
         g_signal_connect(obj, on, G_CALLBACK(_gui_caller), params);
 }
 
+/**
+ *  Get a builder from the user interface definition file
+ */
 GtkBuilder *
 gui_open_builder()
 {

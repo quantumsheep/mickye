@@ -1,5 +1,8 @@
 #include "db.h"
 
+/**
+ *  Open a database stream
+ */
 Database *
 db_open()
 {
@@ -15,12 +18,25 @@ db_open()
     return db;
 }
 
+/**
+ *  Execute SQL query
+ * 
+ *  @param      db      the database object, returned from db_open (db.h)
+ *  @param      sql     the sql query
+ *  @param      err     a potential error
+ */
 int
 db_exec(Database *db, const char *sql, char **err)
 {
     return sqlite3_exec(db, sql, NULL, NULL, err);
 }
 
+/**
+ *  Prepare an SQL query
+ * 
+ *  @param      db      the database object, returned from db_open (db.h)
+ *  @param      sql     the sql query
+ */
 DatabaseStatement
 db_prepare(Database *db, const char *sql)
 {
@@ -35,6 +51,11 @@ db_prepare(Database *db, const char *sql)
     return statement;
 }
 
+/**
+ *  Prepare an SQL query
+ * 
+ *  @param      db      the database object, returned from db_open (db.h)
+ */
 void
 db_close(Database *db)
 {

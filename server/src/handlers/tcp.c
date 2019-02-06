@@ -7,6 +7,11 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 int server_socket;
 
+/**
+ *  Get a client from its socket (named as id here)
+ * 
+ *  @param      id      the client's id/socket
+ */
 TcpClient *
 tcp_get_client(int id)
 {
@@ -30,6 +35,11 @@ tcp_get_client(int id)
     }
 }
 
+/**
+ *  Destroy a socket
+ * 
+ *  @param      socket      the socket
+ */
 void
 tcp_annihilate_socket(int socket)
 {
@@ -37,8 +47,14 @@ tcp_annihilate_socket(int socket)
     close(socket);
 }
 
+/**
+ *  Create a client object and add it to the clients list
+ * 
+ *  @param      socket      the socket
+ *  @param      storage     the TCP server's socket address informations
+ */
 void
-tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *storage)
+tcp_create_connection(int socket, struct sockaddr_storage *storage)
 {
     TcpClient *client;
 
@@ -74,6 +90,12 @@ tcp_create_connection(pthread_t *thread, int socket, struct sockaddr_storage *st
     client_add(env->store, client, CLIENT_CONNECTED);
 }
 
+/**
+ *  Create a client object and add it to the clients list
+ * 
+ *  @param      socket      the socket
+ *  @param      sockaddr_in the TCP server's socket address (IPv4)
+ */
 int
 tcp_bind(int socket, struct sockaddr_in *addr)
 {
@@ -85,6 +107,9 @@ tcp_bind(int socket, struct sockaddr_in *addr)
     return bind(socket, (struct sockaddr *)addr, sizeof(*addr));
 }
 
+/**
+ *  Initialize the TCP server
+ */
 void *
 tcp_init()
 {
@@ -99,14 +124,6 @@ tcp_init()
      * Client socket file descriptors
      */
     int client_socket = 0;
-
-    /**
-     * Number of connected clients
-     */
-    int connections = 0;
-
-    pthread_t tid[64];
-    int clients[64];
 
     // Create the socket.
     server_socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -145,14 +162,7 @@ tcp_init()
             break;
         }
 
-        tcp_create_connection(&tid[connections], client_socket, &storage);
-
-        clients[connections] = client_socket;
-
-        if (++connections >= 64)
-        {
-            pthread_join(tid[connections - 1], NULL);
-        }
+        tcp_create_connection(client_socket, &storage);
     }
 
     /**
@@ -165,6 +175,9 @@ tcp_init()
     pthread_exit(NULL);
 }
 
+/**
+ *  Event handler that starts the TCP server
+ */
 void
 start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {
@@ -186,12 +199,18 @@ start_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
     log_add(data->text_view, "Started", "Server");
 }
 
+/**
+ *  Destroy the TCP server (in a brutal way but hey.. whatever)
+ */
 void
 tcp_stop()
 {
     tcp_annihilate_socket(server_socket);
 }
 
+/**
+ *  Event handler that stops the TCP server
+ */
 void
 stop_server(GtkWidget *widget, GtkBuilder *builder, GuiEnv *data)
 {

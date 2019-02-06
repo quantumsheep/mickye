@@ -5,6 +5,11 @@ struct _defined_tables_t
     int log;
 };
 
+/**
+ *  Check if the database is installed
+ * 
+ *  @param      db      the database object, returned from db_open (db.h)
+ */
 int
 db_installed(Database *db)
 {
@@ -28,6 +33,11 @@ db_installed(Database *db)
     return defined.log;
 }
 
+/**
+ *  Initialize the database (also check if not installed before)
+ * 
+ *  @param      db      the database object, returned from db_open (db.h)
+ */
 void
 db_init(Database *db)
 {
