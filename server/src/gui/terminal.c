@@ -76,6 +76,7 @@ call_terminal(char *title, int width, int height)
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), title);
     gtk_window_set_default_size(GTK_WINDOW(window), width, height);
+    gtk_window_set_position((GtkWindow *)window, GTK_WIN_POS_CENTER);
 
     box = gtk_box_new(TRUE, 0);
     gtk_container_add(GTK_CONTAINER(window), box);

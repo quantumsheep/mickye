@@ -64,6 +64,7 @@ main(int argc, char **argv)
     g_signal_connect(client_tree, "popup-menu", (GCallback)on_popup, text_view);
 
     window = gtk_builder_get_object(builder, "window");
+    gtk_window_set_position((GtkWindow *)window, GTK_WIN_POS_CENTER);
 
     // client_add(store, "0.0.0.0", 1);
 

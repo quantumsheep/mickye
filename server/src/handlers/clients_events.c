@@ -52,6 +52,8 @@ popup_rename(GtkWidget *menuitem, GtkWidget *tree_view)
     rename_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(rename_window, "Rename");
     gtk_window_set_default_size(rename_window, 200, 0);
+    gtk_window_set_position(rename_window, GTK_WIN_POS_MOUSE);
+    gtk_window_set_resizable((GtkWindow *)rename_window, FALSE);
 
     entry = gtk_entry_new();
     g_signal_connect(entry, "activate", (GCallback)rename_client, tree_view);
