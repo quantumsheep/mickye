@@ -3,14 +3,14 @@
 #define CONFIG_DELIM "\n"
 #define CONFIG_MAX_LEN 512
 
-Config *_conf;
+Config *_conf = NULL;
 
 char *
 config_get(char *key)
 {
     Config *config = _conf;
 
-    while (config)
+    while (config != NULL)
     {
         if (strcmp(config->key, key) == 0)
         {
