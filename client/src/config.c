@@ -62,7 +62,10 @@ config_set(char *key, char *value)
 
     if (config != NULL)
     {
-        config->value = value;
+        free(config->value);
+
+        config->value = (char *)calloc(sizeof(char), strlen(value));
+        strcpy(config->value, value);
     }
     else
     {
