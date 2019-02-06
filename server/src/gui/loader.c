@@ -15,6 +15,7 @@ load_clients(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tree)
 
     client_scroll = gtk_builder_get_object(builder, "clients");
 
+    add_column(client_tree, "NAME", COL_NAME);
     add_column(client_tree, "ID", COL_SOCKET);
     add_column(client_tree, "IP", COL_IPV4);
     add_column(client_tree, "STATUS", COL_STATUS);
