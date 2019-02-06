@@ -3,6 +3,7 @@
 
 GtkTextView *text_view;
 GtkWidget *entry;
+GtkWindow *rename_window;
 
 void
 popup_connect(GtkWidget *menu_connect_item, GuiEnv *data)
@@ -34,17 +35,17 @@ rename_client(GtkWidget *entry, GuiEnv *data)
 
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
     {
-        gtk_tree_store_set((GtkTreeStore *)data->store, &iter, 2, "Foo", -1);
+        gtk_tree_store_set((GtkTreeStore *)data->store, &iter, COL_NAME, "Foo", -1);
     }
 
     gtk_entry_buffer_delete_text(Entrybuffer, 0, strlen(text));
+    gtk_widget_destroy(entry);
+    gtk_window_close(GTK_WINDOW(rename_window));
 }
 
 void
 popup_rename(GtkWidget *menuitem, GuiEnv *data)
 {
-    GtkWindow *rename_window;
-
     rename_window = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(rename_window, "Rename");
     gtk_window_set_default_size(rename_window, 200, 0);
@@ -66,6 +67,8 @@ delete_client(GtkWidget *menuitem, GuiEnv *data)
     GtkTreeIter iter;
     GtkTreeModel *model;
     GtkTreeView *client_tree;
+    GValue value = G_VALUE_INIT;
+    int client_id;
 
     client_tree = GTK_TREE_VIEW(data->client_tree);
     model = gtk_tree_view_get_model(client_tree);
@@ -75,6 +78,11 @@ delete_client(GtkWidget *menuitem, GuiEnv *data)
 
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
     {
+        gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
+        client_id = g_value_get_int(&value);
+        g_value_unset(&value);
+
+        tcp_annihilate_socket(client_id);
         gtk_list_store_remove((GtkListStore *)data->store, &iter);
     }
 }
