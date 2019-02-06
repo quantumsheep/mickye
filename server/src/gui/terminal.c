@@ -12,7 +12,7 @@ TcpClient *_selected_client;
 void
 terminal_destroy()
 {
-    if (entry != NULL && window != NULL)
+    if (window != NULL)
     {
         // Close the window
         gtk_window_close(GTK_WINDOW(window));
