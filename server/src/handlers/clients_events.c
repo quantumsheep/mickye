@@ -15,30 +15,42 @@ void
 rename_client(GtkWidget *entry, GuiEnv *data)
 {
     GtkEntryBuffer *Entrybuffer;
-    char *text;
     GtkTreeSelection *selection;
     GtkTreeIter iter;
-    GValue new_name = G_VALUE_INIT;
     GtkTreeModel *model;
     GtkTreeView *client_tree;
+    GValue value = G_VALUE_INIT;
+    char *name;
+    char *ipv4;
+    char *status;
+    int socket;
 
     client_tree = GTK_TREE_VIEW(data->client_tree);
     model = gtk_tree_view_get_model(client_tree);
 
     Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
-    text = (char *)gtk_entry_buffer_get_text(Entrybuffer);
-    g_value_init(&new_name, G_TYPE_STRING);
-    g_value_set_static_string(&new_name, text);
+    name = (char *)gtk_entry_buffer_get_text(Entrybuffer);
 
     selection = gtk_tree_view_get_selection(client_tree);
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
     {
-        gtk_tree_store_set((GtkTreeStore *)data->store, &iter, COL_NAME, "Foo", -1);
+        gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
+        socket = g_value_get_int(&value);
+        g_value_unset(&value);
+        gtk_tree_model_get_value(model, &iter, COL_IPV4, &value);
+        ipv4 = g_value_dup_string(&value);
+        g_value_unset(&value);
+        gtk_tree_model_get_value(model, &iter, COL_STATUS, &value);
+        status = g_value_dup_string(&value);
+        g_value_unset(&value);
+
+        gtk_list_store_remove((GtkListStore *)data->store, &iter);
+        gtk_list_store_insert_with_values(data->store, &iter, -1, COL_NAME, name, COL_SOCKET, socket, COL_IPV4, ipv4, COL_STATUS, status, -1);
     }
 
-    gtk_entry_buffer_delete_text(Entrybuffer, 0, strlen(text));
+    gtk_entry_buffer_delete_text(Entrybuffer, 0, strlen(name));
     gtk_widget_destroy(entry);
     gtk_window_close(GTK_WINDOW(rename_window));
 }
