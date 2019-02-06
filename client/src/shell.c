@@ -40,6 +40,7 @@ shell_open()
          */
         dup2(parent2child_fd[0], STDIN_FILENO);
         dup2(child2parent_fd[1], STDOUT_FILENO);
+        dup2(child2parent_fd[1], STDERR_FILENO);
 
         /* Execute command via shell - this will replace current process */
         execv(SHELL_SHELL, SHELL_CMD);

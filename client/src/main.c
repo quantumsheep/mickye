@@ -50,8 +50,6 @@ shell_stdout_to_server(void *args)
             break;
         }
 
-        puts(store);
-
         fd_write(server, store);
     }
 
