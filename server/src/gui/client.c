@@ -14,7 +14,7 @@ client_add(GtkListStore *store, TcpClient *client, int status)
 {
     GtkTreeIter iter;
     char *status_str;
-    
+
     switch (status)
     {
     case CLIENT_CONNECTED:
@@ -36,14 +36,14 @@ client_connect(GtkWidget *_, GtkBuilder *builder, GuiEnv *data)
 {
     GtkTreeSelection *selection;
     GtkTreeIter iter;
-    GValue value = {
-        0};
+    GValue value = G_VALUE_INIT;
     GtkTreeModel *model;
     GtkTreeView *client_tree;
+    TcpClient *client;
+    int client_id;
 
-    TcpClient *client = NULL;
-    int client_id = -1;
-
+    client = NULL;
+    client_id = -1;
     client_tree = GTK_TREE_VIEW(data->client_tree);
     model = gtk_tree_view_get_model(client_tree);
 

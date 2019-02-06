@@ -60,8 +60,8 @@ main(int argc, char **argv)
     gui_add_handler(builder, "stop", "clicked", stop_server, &gui_env);
     gui_add_handler(builder, "connect", "clicked", client_connect, &gui_env);
 
-    g_signal_connect(client_tree, "button-press-event", (GCallback)trigger_clients_button_press, gui_env.text_view);
-    g_signal_connect(client_tree, "popup-menu", (GCallback)on_popup, text_view);
+    g_signal_connect(client_tree, "button-press-event", (GCallback)trigger_clients_button_press, &gui_env);
+    g_signal_connect(client_tree, "popup-menu", (GCallback)on_popup, &gui_env);
 
     window = gtk_builder_get_object(builder, "window");
     gtk_window_set_position ((GtkWindow *)window, GTK_WIN_POS_CENTER);
