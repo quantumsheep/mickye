@@ -41,6 +41,7 @@ N’hésitez pas à modifier les adresses et/ou les ports pour un usage plus sp�
 # Installation
 
 **Toutes les étapes d’installation sont obligatoires.**
+
 Tout d’abord il vous faudra récupérer le projet depuis ce lien si ce n’est pas déjà fait :
 
 __**https://github.com/QuantumSheep/mickye/archive/master.zip**__
@@ -62,15 +63,15 @@ Enfin, une fois la compilation terminée, vous pouvez commencer à utiliser Mick
 
 Entrez la commande `./mickye` depuis `/server`. Si tout s’est déroulé correctement, vous devriez avoir une interface comme celle-ci qui viens de s’ouvrir :
 
-![SERVEUR](https://raw.githubusercontent.com/QuantumSheep/mickye/master/img/terminal-debian.png)
+![SERVEUR](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/terminal-debian.png)
 
 Entrez la commande `./mickye_client` depuis `/client` de même si tout s’est bien déroulé, vous devriez avoir un message comme celui-ci depuis votre invite de commande :
 
-![CLIENT](https://raw.githubusercontent.com/QuantumSheep/mickye/master/img/client-debian.png)
+![CLIENT](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/client-debian.png)
 
 # Utilisation
 
-![SERVEURWITHCLIENTS](https://raw.githubusercontent.com/QuantumSheep/mickye/master/img/terminal-with-client-debian.png)
+![SERVEURWITHCLIENTS](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/terminal-with-client-debian.png)
 
 __**Start server :**__
 Permet de lancer le serveur d’écoute. Si un client est exécuté vers votre L’IP du serveur (127.0.0.1 par défaut), il se liera au serveur.
@@ -87,7 +88,7 @@ Correspond à la liste des différents clients, vous pouvez y sélectionner, ren
 __**Découpage de droite (partie basse) :**__
 Correspond à la liste des logs reçu pour chaque action de l’application.
 
-![POPUP](https://raw.githubusercontent.com/QuantumSheep/mickye/master/img/popup-debian.png)
+![POPUP](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/popup-debian.png)
 
 Une fois un clic droit effectué sur un client de la liste un menu déroulant s’ouvre.
 
@@ -100,12 +101,12 @@ Lance une pop-up vous permettant de renommer le client sélectionné s’il n’
 __**Remove selected client :**__
 Essaye de supprimer un client et de clore la connexion établie avec lui s’il n’y a pas d’erreur sinon, inscrit l’erreur dans la liste des logs (voir pages du dessus).
 
-![RENAME](https://raw.githubusercontent.com/QuantumSheep/mickye/master/img/rename-debian.png)
+![RENAME](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/rename-debian.png)
 
 __**Pop-up de renommage :**__
 Rentrer un nom pour le client sélectionné, puis appuyer sur entrer, essayera de renommer le client. Sinon, renverra une erreur dans la partie de logs (voir pages du dessus).
 
-![TERMINAL](https://raw.githubusercontent.com/QuantumSheep/mickye/master/img/terminal-debian.png)
+![TERMINAL](https://raw.githubusercontent.com/QuantumSheep/mickye/master/papers/img/terminal-debian.png)
 
 Voici une fenêtre de terminal client.
 
