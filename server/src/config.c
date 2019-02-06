@@ -9,11 +9,13 @@ Config *
 config_select(char *key)
 {
     Config *config = _conf;
+
     /**
      * Find the configuration value matching key
      */
     while (config != NULL)
     {
+        // printf("%s : %d\n", config->key, strlen(config->key));
         if (strcmp(config->key, key) == 0)
         {
             return config;
@@ -65,8 +67,13 @@ config_set(char *key, char *value)
     else
     {
         config = (Config *)malloc(sizeof(Config));
-        config->key = key;
-        config->value = value;
+
+        config->key = (char *)calloc(sizeof(char), strlen(key));
+        config->value = (char *)calloc(sizeof(char), strlen(value));
+
+        strcpy(config->key, key);
+        strcpy(config->value, value);
+
         config->next = _conf;
         _conf = config;
     }
@@ -94,7 +101,6 @@ config_update()
 
         if (strlen(value) > 0)
         {
-            // puts(line);
             config_set(key, value);
         }
 
