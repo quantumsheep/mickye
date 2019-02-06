@@ -5,9 +5,9 @@ static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 /*
 *   Function to add a log in the log widget (window).
 *   Asking for :
-*   the main text_view of the log widget
-*   a char* corresponding to the displayed info
-*   a second char* corresponding to another displayed info (most of a subject like)
+*   @param      text_view       the main text_view of the log widget
+*   @param      info_str        a char* corresponding to the displayed info
+*   @param      subject_str     a second char* corresponding to another displayed info (most of a subject like)
 */
 void
 log_add(GtkTextView *text_view, char *info_str, char *subject_str)
