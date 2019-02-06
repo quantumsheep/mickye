@@ -6,7 +6,7 @@ GtkWindow *rename_window;
 int client_id;
 
 /*
-*   Function to connect to a client after clicking one the "connect" options of the menu
+*   Connect to a client after clicking one the "connect" options of the menu
 *   
 *   @param      _      the unused widget for the menu option
 *   @param      data   GuiEnv data set in main
@@ -39,7 +39,7 @@ rename_client_from_iter(GtkTreeModel *model, GtkTreeIter iter, GValue value, Gui
 }
 
 /*
-*   Function to rename a client after clicking one the "rename" options of the menu
+*   Rename a client after clicking one the "rename" options of the menu
 *   
 *   @param      entry       the widget for the entry who have the entered text
 *   @param      data        GuiEnv data set in main
@@ -92,7 +92,7 @@ rename_client(GtkWidget *entry, GuiEnv *data)
 }
 
 /*
-*   Function to create the popup rename event
+*   Create the popup rename event
 *   
 *   @param      _      the unused widget for the rename popup window
 *   @param      data   GuiEnv data set in main
@@ -105,11 +105,11 @@ popup_rename(GtkWidget *_, GuiEnv *data)
     GtkTreeModel *model;
     GValue value = G_VALUE_INIT;
 
-    //Getting the selected client of the client list
+    // Getting the selected client of the client list
     selection = gtk_tree_view_get_selection((GtkTreeView *)data->client_tree);
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
-    //If a client is selected, get the socket value, get the ipv4 value, get the status of the client, remove it and recreate it with the new asked name
+    // If a client is selected, get the socket value, get the ipv4 value, get the status of the client, remove it and recreate it with the new asked name
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
     {
         gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
@@ -128,7 +128,7 @@ popup_rename(GtkWidget *_, GuiEnv *data)
     entry = gtk_entry_new();
     g_signal_connect(entry, "activate", (GCallback)rename_client, data);
 
-    //Add the entry to the rename popup window
+    // Add the entry to the rename popup window
     gtk_container_add((GtkContainer *)rename_window, entry);
 
     // Show the rename popup window
@@ -136,7 +136,7 @@ popup_rename(GtkWidget *_, GuiEnv *data)
 }
 
 /*
-*   Function to delete a client after clicking one the "delete" options of the menu
+*   Delete a client after clicking one the "delete" options of the menu
 *   
 *   @param      _      the unused widget for the menu option
 *   @param      data   GuiEnv data set in main
@@ -174,7 +174,7 @@ delete_client(GtkWidget *_, GuiEnv *data)
 }
 
 /*
-*   Function to create the menu list on right click
+*   Create the menu list on right click
 *   
 *   @param      data    GuiEnv data set in main
 *   @param      event   the event catched from the user click
@@ -211,7 +211,7 @@ show_popmenu(GuiEnv *data, GdkEventButton *event)
 }
 
 /*
-*   Boolean function to catch the click of the user
+*   Catch the click of the user
 *   
 *   @param      _           the unused widget for the tree_view
 *   @param      event       the event type of the click (right click or not ?)
@@ -230,7 +230,7 @@ trigger_clients_button_press(GtkWidget *_, GdkEventButton *event, GuiEnv *data)
 }
 
 /*
-*   Function to catch the popup_menu event
+*   Catch the popup_menu event
 *   
 *   @param      _      the unused widget for the tree_view
 *   @param      data   GuiEnv data set in main

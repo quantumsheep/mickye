@@ -1,6 +1,6 @@
 #include "client.h"
 
-//Declaring collumns enumerator for the Store
+// Declaring collumns enumerator for the Store
 enum
 {
     COL_NAME = 0,
@@ -11,11 +11,11 @@ enum
 };
 
 /*
-*   Function to add client in the ListStore (GtkListStore) corresponding to the list of clients
+*   Add client in the ListStore (GtkListStore) corresponding to the clients list
 *   
 *   @param      store      the main ListStore of the client list window
-*   @param      client     a TcpClient object corresponding of a TcpClient struct
-*   @param      status     a int corresponding to the status of the client (connected, disconnected...)
+*   @param      client     the client to add, created when a new connexion is opened in the TCP handler
+*   @param      status     CLIENT_CONNECTED or CLIENT_DISCONNECTED (enumerates)
 */
 void
 client_add(GtkListStore *store, TcpClient *client, int status)
@@ -42,11 +42,9 @@ client_add(GtkListStore *store, TcpClient *client, int status)
 }
 
 /*
-*   Function to connect with a client in the ListStore (GtkListStore) corresponding to the list of clients
+*   Open the currently selected client's terminal
 *   
-*   @param      _      a unused widget (fault is going to gui_add_handler function...) can be NULL
-*   @param      __     a unused builder (fault is going to gui_add_handler function...) can be NULL
-*   @param      data   GuiEnv data set in main
+*   @param      data   GUI environnement
 */
 void
 client_connect(GtkWidget *_, GtkBuilder *__, GuiEnv *data)

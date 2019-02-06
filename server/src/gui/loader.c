@@ -1,23 +1,25 @@
 #include "loader.h"
 
 /*
-*   Function to add a column the the main client tree
+*   Add a column to a GtkTreeView (required as a GtkWidget)
 *   
-*   @param      client_tree     the main client_tree of the client list
+*   @param      tree            a GtkTreeView casted as GtkWidget
 *   @param      name            the name of the new column
 *   @param      position        the position of the column
 */
 void
-add_column(GtkWidget *client_tree, char *name, int position)
+add_column(GtkWidget *tree, char *name, int position)
 {
-    // Creating a renderer and insert a new collumn with set attributes in the tree_view
+    /**
+     * Creating a renderer and insert a new collumn with set attributes in the GtkTreeView
+     */
     GtkCellRenderer *renderer;
     renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(client_tree), -1, name, renderer, "text", position, NULL);
+    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree), -1, name, renderer, "text", position, NULL);
 }
 
 /*
-*   Function to load the client list in the main tree_view
+*   Load the client list in the main tree_view
 *   
 *   @param      builder         the main builder, who construct the elements
 *   @param      store           the tree_view model (for a lcient in the list)
@@ -45,9 +47,9 @@ load_clients_list(GtkBuilder *builder, GtkListStore *store, GtkWidget *client_tr
 }
 
 /*
-*   Function to load main VTE terminal
+*   Load VTE terminal to the main window
 *   
-*   @param      builder         the main builder, who construct the elements
+*   @param      builder         the builder object
 */
 void
 load_terminal(GtkBuilder *builder)
@@ -88,10 +90,10 @@ load_terminal(GtkBuilder *builder)
 }
 
 /*
-*   Function to load the logs part of the main window
+*   Load the logs part in the main window
 *   
-*   @param      builder         the main builder, who construct the elements
-*   @param      text_view       the log text_view, who deserve the logs
+*   @param      builder         the builder object
+*   @param      text_view       the GtkTextView who will receive the logs
 */
 void
 load_logs(GtkBuilder *builder, GtkTextView *text_view)
@@ -108,14 +110,13 @@ load_logs(GtkBuilder *builder, GtkTextView *text_view)
     gtk_text_view_set_editable(text_view, 0);
 }
 
-
 /*
-*   Function to load the main interface components
+*   Load the main interface components
 *   
-*   @param      builder         the main builder, who construct the elements
-*   @param      text_view       the log text_view, who deserve the logs
-*   @param      store           the three_view model, of the client list
-*   @param      client_tree     the three_view of the client list
+*   @param      builder         the builder object
+*   @param      text_view       the GtkTextView who will receive the logs
+*   @param      store           the GtkTreeView model, of the client list
+*   @param      client_tree     the GtkTreeView of the client list (cast as a GtkWidget)
 */
 void
 load_interface(GtkBuilder *builder, GtkTextView *text_view, GtkListStore *store, GtkWidget *client_tree)

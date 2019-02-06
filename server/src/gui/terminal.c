@@ -7,7 +7,7 @@ GuiEnv *_env = NULL;
 TcpClient *_selected_client;
 
 /*
-*   Function to remove a gtk terminal window
+*   Close the currently oppened terminal
 */
 void
 terminal_destroy()
@@ -20,7 +20,7 @@ terminal_destroy()
 }
 
 /*
-*   Function to insert a text (char*) into the terminal entry of a client
+*   Insert text in the currently openned terminal's entry
 *   
 *   @param      text       the text to insert
 */
@@ -127,7 +127,7 @@ terminal_listen_client(void *args, GuiEnv *env)
 }
 
 /*
-*   Function to set the colors of a new terminal
+*   Set the current terminal text's colors
 *   
 *   @param      entry           the entry of the terminal
 *   @param      text_view       the textview of the terminal
@@ -174,7 +174,7 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
 }
 
 /*
-*   Function to start a new terminal for a selected client
+*   Start a new terminal for a selected client
 *   
 *   @param      client      the selected client already set
 *   @param      env         GuiEnv env set in main
