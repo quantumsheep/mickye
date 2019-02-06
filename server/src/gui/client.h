@@ -15,6 +15,15 @@ enum
     CLIENT_DISCONNECTED
 };
 
+enum
+{
+    COL_NAME = 0,
+    COL_SOCKET,
+    COL_IPV4,
+    COL_STATUS,
+    NUM_COLS
+};
+
 void
 client_add(GtkListStore *store, TcpClient *client, int status);
 

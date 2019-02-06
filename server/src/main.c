@@ -1,3 +1,5 @@
+#include <gtk/gtk.h>
+
 #include "config.h"
 #include "database/db.h"
 #include "database/db_initializer.h"
@@ -6,7 +8,6 @@
 #include "gui/loader.h"
 #include "handlers/clients_events.h"
 #include "handlers/tcp.h"
-#include <gtk/gtk.h>
 
 int
 main(int argc, char **argv)
