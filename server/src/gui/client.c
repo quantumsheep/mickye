@@ -132,14 +132,15 @@ client_connect(GtkWidget *_, GtkBuilder *__, GuiEnv *data)
     selection = gtk_tree_view_get_selection(client_tree);
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
-    // set the iter to the selection
+    // Set the iter to the selectionned item
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
     {
+        // Get the GValue of selected item
         gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
-
         client_id = g_value_get_int(&value);
         g_value_unset(&value);
 
+        // If client_id exist, create the client, if client != NULL try to connect, else for the two if, send a error log.
         if (client_id)
         {
             client = tcp_get_client(client_id);
