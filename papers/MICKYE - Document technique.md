@@ -96,4 +96,4 @@ Le second terminal est disponible lors de la connexion à un client, il recevra 
 
 # Liste des clients
 
-Les clients connectés au serveur TCP son listés à droite de l'interface. En faisant clique droit sur eux, un menu s'affiche répertoriant les diverses actions possibles pour ce client.
+Les clients connectés au serveur TCP son listés à droite de l'interface. Leur nom, leur IPv4 ainsi que leur ID et leur statut sont affichés. En faisant clique droit sur un client, un menu s'affiche répertoriant les diverses actions possibles pour ce client tel que le renommage, la suppression ou encore la connexion à celui-ci.
