@@ -20,7 +20,6 @@ config_select(char *key)
      */
     while (config != NULL)
     {
-        // printf("%s : %d\n", config->key, strlen(config->key));
         if (strcmp(config->key, key) == 0)
         {
             return config;
