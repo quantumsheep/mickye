@@ -13,7 +13,6 @@ terminal_destroy()
 {
     if (entry != NULL && window != NULL)
     {
-        gtk_widget_destroy(entry);
         gtk_window_close(GTK_WINDOW(window));
     }
 }
@@ -51,8 +50,13 @@ terminal_send_to_client()
 }
 
 void *
-terminal_listen_client(void *args)
+terminal_listen_client(void *args, GuiEnv *env)
 {
+    GtkTreeSelection *selection;
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    GtkTreeView *client_tree;
+    GValue value = G_VALUE_INIT;
     char data[TCP_CHUNK_SIZE];
     ssize_t received;
 
@@ -70,12 +74,10 @@ terminal_listen_client(void *args)
         }
     }
 
-    puts("Client exited - Stopping terminal...");
-
     terminal_destroy();
+    delete_client(NULL, _env);
 
-    client_set_disconnect(_selected_client->socket, _env);
-
+    log_add(_env->text_view, "Client exited", "Stopping terminal...");
     pthread_exit(NULL);
     return NULL;
 }
@@ -146,7 +148,7 @@ terminal_start(TcpClient *client, GuiEnv *env)
     /**
      * Read client's output
      */
-    pthread_create(&thread, NULL, terminal_listen_client, NULL);
+    pthread_create(&thread, NULL, terminal_listen_client, env);
 
     /**
      * Read terminal input
