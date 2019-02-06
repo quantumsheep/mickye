@@ -13,28 +13,27 @@ popup_connect(GtkWidget *menuitem, gpointer userdata)
     tree_view = GTK_TREE_VIEW(userdata);
 
     gui_env.client_tree = (GtkWidget *)tree_view;
-    gui_env.store = gtk_tree_view_get_model(gui_env.client_tree);
+    gui_env.store = (GtkListStore *)gtk_tree_view_get_model((GtkTreeView *)gui_env.client_tree);
     gui_env.text_view = text_view;
 
     client_connect(NULL, NULL, &gui_env);
 }
 
 void
-rename_client(GtkWidget *entry, GtkWidget *tree_view){
+rename_client(GtkWidget *entry, GtkWidget *tree_view)
+{
     GtkEntryBuffer *Entrybuffer;
     char *text;
     GtkTreeSelection *selection;
     GtkTreeIter iter;
     GtkTreeModel *model;
-    GtkTreeView *client_tree;
-    char selected_ip[200];
 
     Entrybuffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
-    text = (char*)gtk_entry_buffer_get_text(Entrybuffer);
+    text = (char *)gtk_entry_buffer_get_text(Entrybuffer);
 
-    model = gtk_tree_view_get_model(tree_view);
+    model = gtk_tree_view_get_model((GtkTreeView *)tree_view);
 
-    selection = gtk_tree_view_get_selection(tree_view);
+    selection = gtk_tree_view_get_selection((GtkTreeView *)tree_view);
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
     if (gtk_tree_selection_get_selected(selection, &model, &iter))
@@ -55,9 +54,9 @@ popup_rename(GtkWidget *menuitem, GtkWidget *tree_view)
     gtk_window_set_default_size(rename_window, 200, 0);
 
     entry = gtk_entry_new();
-    g_signal_connect(entry, "activate", rename_client, tree_view);
+    g_signal_connect(entry, "activate", (GCallback)rename_client, tree_view);
 
-    gtk_container_add(rename_window, entry);
+    gtk_container_add((GtkContainer *)rename_window, entry);
 
     gtk_widget_show_all(GTK_WIDGET(rename_window));
 }
@@ -84,7 +83,7 @@ show_popmenu(GtkWidget *tree_view, GdkEventButton *event)
 }
 
 gboolean
-trigger_clients_button_press(GtkWidget *tree_view, GdkEventButton *event,  GtkTextView *main_text_view)
+trigger_clients_button_press(GtkWidget *tree_view, GdkEventButton *event, GtkTextView *main_text_view)
 {
     text_view = main_text_view;
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
