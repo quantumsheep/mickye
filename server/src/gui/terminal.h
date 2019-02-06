@@ -1,6 +1,7 @@
 #ifndef _GUI_TERMINAL_H
 #define _GUI_TERMINAL_H
 
+#include <errno.h>
 #include <gtk/gtk.h>
 #include <pthread.h>
 #include <string.h>
@@ -14,6 +15,6 @@
 #define TERMINAL_DEFAULT_HEIGH 300
 
 void
-terminal_start(TcpClient *client);
+terminal_start(TcpClient *client, GuiEnv *env);
 
 #endif

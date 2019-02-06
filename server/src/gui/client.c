@@ -47,10 +47,12 @@ client_set_disconnect(int id, GuiEnv *data)
         g_value_unset(&value);
         while (valid)
         {
-            if(socketmp == id){
+            if (socketmp == id)
+            {
                 found = TRUE;
                 break;
-            }else
+            }
+            else
             {
                 valid = gtk_tree_model_iter_next(model, &iter);
             }
@@ -149,7 +151,7 @@ client_connect(GtkWidget *_, GtkBuilder *__, GuiEnv *data)
             {
                 log_add(data->text_view, "Trying to connect to", client->ipv4);
 
-                terminal_start(client);
+                terminal_start(client, data);
             }
             else
             {

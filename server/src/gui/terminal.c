@@ -1,11 +1,12 @@
 #include "terminal.h"
-#include <errno.h>
 
 GtkWidget *entry;
 GtkWidget *text_view;
 GtkWidget *window;
 
-TcpClient *selected_client;
+GuiEnv *_env = NULL;
+
+TcpClient *_selected_client;
 
 void
 terminal_destroy()
@@ -41,7 +42,7 @@ terminal_send_to_client()
     insert_entry(text);
     insert_entry("\n");
 
-    if (write(selected_client->socket, text, strlen(text)) == -1)
+    if (write(_selected_client->socket, text, strlen(text)) == -1)
     {
         puts(strerror(errno));
     }
@@ -57,7 +58,7 @@ terminal_listen_client(void *args)
 
     while (1)
     {
-        received = read(selected_client->socket, data, TCP_CHUNK_SIZE);
+        received = read(_selected_client->socket, data, TCP_CHUNK_SIZE);
 
         printf("%d\n", received);
 
@@ -69,14 +70,15 @@ terminal_listen_client(void *args)
         {
             break;
         }
-        
     }
 
     puts("Client exited - Stopping terminal...");
 
     terminal_destroy();
 
-    pthread_exit(NULL);
+    client_set_disconnect(_selected_client->socket, _env);
+
+        pthread_exit(NULL);
     return NULL;
 }
 
@@ -115,7 +117,7 @@ set_terminal_colors(GtkWidget *entry, GtkWidget *text_view)
 }
 
 void
-terminal_start(TcpClient *client)
+terminal_start(TcpClient *client, GuiEnv *env)
 {
     pthread_t thread;
 
@@ -124,7 +126,8 @@ terminal_start(TcpClient *client)
 
     terminal_destroy();
 
-    selected_client = client;
+    _env = env;
+    _selected_client = client;
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), client->ipv4);
