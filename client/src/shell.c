@@ -18,15 +18,14 @@ shell_open()
      */
     int parent2child_fd[2];
     int child2parent_fd[2];
-    int pid;
 
     /* First, create a pipe and a pair of file descriptors for its both ends */
     pipe(parent2child_fd);
     pipe(child2parent_fd);
 
     /* Now fork in order to create process from we'll read from */
-    pid = fork();
-    if (pid == 0)
+    shell.pid = fork();
+    if (shell.pid == 0)
     {
         /* Child process */
 
@@ -75,6 +74,7 @@ shell_open()
 void
 shell_close(Shell shell)
 {
+    kill(shell.pid, SIGKILL);
     close(shell.stdin);
     close(shell.stdout);
 }
