@@ -76,6 +76,7 @@ terminal_listen_client(void *args, GuiEnv *env)
 
     while (1)
     {
+        memset(data, 0x00, TCP_CHUNK_SIZE);
         received = read(_selected_client->socket, data, TCP_CHUNK_SIZE);
 
         if (received > 0)
