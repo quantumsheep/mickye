@@ -72,7 +72,7 @@ rename_client(GtkWidget *entry, GuiEnv *data)
         }
         else
         {
-            if (gtk_tree_model_iter_next(model, &iter))
+            while (gtk_tree_model_iter_next(model, &iter))
             {
                 gtk_tree_model_get_value(model, &iter, COL_SOCKET, &value);
                 validate = g_value_get_int(&value);
@@ -80,6 +80,7 @@ rename_client(GtkWidget *entry, GuiEnv *data)
                 if (validate == client_id)
                 {
                     rename_client_from_iter(model, iter, value, data, name);
+                    break;
                 }
             }
         }
