@@ -12,7 +12,7 @@ Don't question the name, it doesn't matter.
 | Operating System | Status  |
 |------------------|---------|
 | Windows          | ❌      |
-| MacOS            | ❔      |
+| MacOS            | ✔️      |
 | Arch Linux       | ❔      |
 | CentOS           | ❔      |
 | Debian           | ✔️       |
